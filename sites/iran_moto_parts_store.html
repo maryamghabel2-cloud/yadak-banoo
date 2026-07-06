@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تیزرو یدک پرو مکس | فروشگاه آنلاین و تیونینگ لوازم یدکی موتورسیکلت در ایران</title>
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg: #050811;
+            --surface: #0e1526;
+            --surface-hover: #162038;
+            --orange: #ff6600;
+            --orange-glow: rgba(255, 102, 0, 0.35);
+            --cyan: #00f0ff;
+            --cyan-glow: rgba(0, 240, 255, 0.3);
+            --red: #ff0033;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 102, 0, 0.22);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --font-fa: 'Vazirmatn', Tahoma, IRANSans, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-fa); }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 102, 0, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+            line-height: 1.7;
+        }
+
+        /* Top Notification Banner */
+        .top-banner {
+            background: linear-gradient(90deg, #111827, #3b180d, #111827);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px; text-align: center; font-size: 13px; font-weight: 700;
+            color: var(--orange); position: relative; z-index: 100;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .banner-pulse { width: 8px; height: 8px; background: #34d399; border-radius: 50%; box-shadow: 0 0 10px #34d399; animation: ping 1.5s infinite; }
+        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+
+        /* Navbar */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; background: rgba(5, 8, 17, 0.88);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light);
+            position: sticky; top: 0; z-index: 90;
+        }
+        @media (max-width: 768px) { nav { padding: 16px 20px; flex-direction: column; gap: 14px; } }
+
+        .brand {
+            font-size: 26px; font-weight: 900;
+            background: linear-gradient(to left, #fff, var(--orange));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 12px; text-decoration: none;
+        }
+        .brand-logo {
+            width: 44px; height: 44px; background: linear-gradient(135deg, var(--orange), #ff9900);
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            color: #000; font-weight: 900; font-size: 22px; box-shadow: 0 0 25px var(--orange-glow);
+        }
+
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 15px; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+        @media (max-width: 640px) { .nav-links { display: none; } }
+
+        .nav-actions { display: flex; gap: 16px; align-items: center; }
+
+        .btn-cart {
+            background: rgba(255, 102, 0, 0.15); border: 1px solid var(--orange);
+            color: #fff; font-weight: 800; font-size: 14px; padding: 10px 22px;
+            border-radius: 30px; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-cart:hover { background: var(--orange); color: #000; box-shadow: 0 0 25px var(--orange-glow); }
+        .cart-badge {
+            background: var(--red); color: #fff; font-size: 12px; padding: 2px 8px;
+            border-radius: 20px; font-weight: 900;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 80px 50px 100px; max-width: 1350px; margin: 0 auto;
+            position: relative; z-index: 10;
+            display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 50px;
+        }
+        @media (max-width: 992px) { .hero { grid-template-columns: 1fr; text-align: center; padding: 50px 20px; } }
+
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255, 102, 0, 0.12); border: 1px solid var(--border);
+            color: var(--orange); padding: 8px 20px; border-radius: 30px;
+            font-size: 13px; font-weight: 800; margin-bottom: 24px;
+        }
+        h1 { font-size: 54px; font-weight: 900; line-height: 1.15; margin-bottom: 22px; }
+        @media (max-width: 768px) { h1 { font-size: 36px; } }
+        h1 span.highlight {
+            background: linear-gradient(135deg, var(--orange), #ffcc00, #fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 35px rgba(255, 102, 0, 0.3);
+        }
+        p.lead { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 36px; }
+        @media (max-width: 992px) { p.lead { margin: 0 auto 36px; } }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), #ff9900);
+            color: #000; font-weight: 800; font-size: 16px; padding: 16px 36px;
+            border-radius: 30px; border: none; cursor: pointer; text-decoration: none;
+            box-shadow: 0 0 35px var(--orange-glow); transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 0 50px var(--orange); }
+
+        /* 3D Hero Moto Card */
+        .hero-card-3d {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 32px; padding: 24px; backdrop-filter: blur(25px);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 40px var(--orange-glow);
+            transform: rotateY(12deg) rotateX(6deg); transition: transform 0.15s ease-out;
+            cursor: pointer; position: relative; overflow: hidden;
+        }
+        .hero-card-3d:hover { transform: rotateY(0deg) rotateX(0deg) scale(1.03); }
+        .hero-img {
+            width: 100%; height: 380px; object-fit: cover; border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7); transition: transform 0.5s;
+        }
+        .hero-card-3d:hover .hero-img { transform: scale(1.06); }
+        
+        .card-badge-top {
+            position: absolute; top: 40px; left: 40px; background: rgba(0,0,0,0.85);
+            border: 1px solid var(--cyan); color: var(--cyan); padding: 8px 16px;
+            border-radius: 20px; font-size: 12px; font-weight: 800; backdrop-filter: blur(10px);
+        }
+
+        /* SMART MOTORCYCLE PARTS FINDER */
+        .finder-section {
+            max-width: 1250px; margin: 0 auto 80px; padding: 0 24px; position: relative; z-index: 20;
+        }
+        .finder-box {
+            background: linear-gradient(135deg, #0f172a, #1e1118);
+            border: 2px solid var(--orange); border-radius: 32px; padding: 36px 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px var(--orange-glow);
+        }
+        .finder-title { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .finder-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 24px; }
+        
+        .finder-grid { display: grid; grid-template-columns: 2fr 2fr 1.2fr; gap: 20px; align-items: center; }
+        @media (max-width: 768px) { .finder-grid { grid-template-columns: 1fr; } }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 14px; font-weight: 700; color: #fff; }
+        .form-select {
+            width: 100%; padding: 16px 20px; background: rgba(0,0,0,0.6);
+            border: 1px solid var(--border-light); border-radius: 16px; color: #fff; font-size: 15px; font-weight: 700;
+            outline: none; transition: all 0.3s; cursor: pointer;
+        }
+        .form-select:focus { border-color: var(--orange); box-shadow: 0 0 15px var(--orange-glow); }
+        .form-select option { background: #0b111e; color: #fff; padding: 10px; }
+
+        .btn-search {
+            background: linear-gradient(135deg, var(--orange), #ff9900); color: #000;
+            font-weight: 900; font-size: 16px; padding: 16px; border-radius: 16px; border: none;
+            cursor: pointer; transition: all 0.3s; margin-top: 26px; box-shadow: 0 0 25px var(--orange-glow);
+        }
+        .btn-search:hover { transform: translateY(-2px); box-shadow: 0 0 40px var(--orange); }
+
+        /* TRUST BADGES IN IRAN */
+        .trust-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+            max-width: 1300px; margin: 0 auto 80px; padding: 0 24px;
+        }
+        @media (max-width: 900px) { .trust-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .trust-grid { grid-template-columns: 1fr; } }
+        
+        .trust-card {
+            background: var(--surface); border: 1px solid var(--border-light); border-radius: 20px;
+            padding: 24px; text-align: center; transition: all 0.3s;
+        }
+        .trust-card:hover { border-color: var(--orange); transform: translateY(-5px); }
+        .trust-icon { font-size: 36px; margin-bottom: 12px; }
+        .trust-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+        .trust-desc { font-size: 13px; color: var(--text-muted); }
+
+        /* PRODUCTS GRID SECTION */
+        .section-box { padding: 60px 50px; max-width: 1350px; margin: 0 auto; position: relative; z-index: 10; }
+        @media (max-width: 768px) { .section-box { padding: 40px 20px; } }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; border-bottom: 1px solid var(--border-light); padding-bottom: 20px; }
+        @media (max-width: 600px) { .section-header { flex-direction: column; align-items: flex-start; gap: 14px; } }
+        .section-header h2 { font-size: 36px; font-weight: 900; }
+        .section-header p { color: var(--text-muted); font-size: 16px; margin-top: 6px; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .products-grid { grid-template-columns: 1fr; } }
+
+        .product-card {
+            background: var(--surface); border: 1px solid var(--border-light); border-radius: 28px;
+            padding: 22px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .product-card:hover {
+            border-color: var(--orange); transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 30px var(--orange-glow);
+        }
+        .prod-img-wrap { width: 100%; height: 230px; border-radius: 20px; overflow: hidden; margin-bottom: 18px; position: relative; background: #0a0f1d; }
+        .prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .product-card:hover .prod-img { transform: scale(1.12); }
+        
+        .discount-badge {
+            position: absolute; top: 12px; right: 12px; background: var(--red);
+            color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 900;
+        }
+        .compatible-tag {
+            position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.85);
+            border: 1px solid var(--cyan); color: var(--cyan); padding: 4px 10px;
+            border-radius: 12px; font-size: 11px; font-weight: 700;
+        }
+
+        .prod-cat { font-size: 12px; color: var(--orange); font-weight: 800; margin-bottom: 6px; }
+        .prod-title { font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .prod-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+        
+        .prod-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 16px; }
+        .price-box { display: flex; flex-direction: column; }
+        .old-price { font-size: 13px; color: var(--text-muted); text-decoration: line-through; }
+        .new-price { font-size: 20px; font-weight: 900; color: #fff; }
+        .new-price span { font-size: 13px; font-weight: 700; color: var(--orange); }
+
+        .btn-add {
+            background: rgba(255, 102, 0, 0.15); border: 1px solid var(--orange); color: var(--orange);
+            font-weight: 800; font-size: 13px; padding: 10px 18px; border-radius: 20px;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .btn-add:hover { background: var(--orange); color: #000; box-shadow: 0 0 20px var(--orange-glow); }
+
+        /* BEFORE & AFTER TUNING COMPARISON */
+        .comp-container {
+            position: relative; width: 100%; max-width: 950px; height: 440px; margin: 40px auto;
+            border-radius: 32px; overflow: hidden; border: 1px solid var(--orange);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 40px var(--orange-glow); user-select: none;
+        }
+        @media (max-width: 768px) { .comp-container { height: 300px; } }
+        .comp-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: flex-end; padding: 30px; }
+        .comp-before {
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%), url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=1000&q=80') center/cover;
+            color: #9ca3af; width: 100%;
+        }
+        .comp-after {
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%), url('https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1000&q=80') center/cover;
+            color: var(--orange); width: 50%; overflow: hidden; border-left: 3px solid var(--orange); box-shadow: -5px 0 30px var(--orange-glow);
+        }
+        .comp-badge { background: rgba(0,0,0,0.85); padding: 10px 20px; border-radius: 20px; font-weight: 800; font-size: 15px; border: 1px solid rgba(255,255,255,0.2); }
+        .comp-slider-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; z-index: 20; }
+
+        /* SHOPPING CART SIDEBAR MODAL */
+        .cart-overlay {
+            position: fixed; top: 0; right: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            display: none; justify-content: flex-start; z-index: 1000;
+        }
+        .cart-sidebar {
+            width: 420px; max-width: 100%; height: 100vh; background: #0a0f1d;
+            border-left: 1px solid var(--orange); padding: 30px; display: flex; flex-direction: column;
+            justify-content: space-between; box-shadow: -20px 0 60px rgba(0,0,0,0.9);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 14px; }
+        .cart-item-title { font-weight: 700; color: #fff; }
+        .cart-item-price { color: var(--orange); font-weight: 800; }
+
+        /* TOAST NOTIFICATION */
+        #toast {
+            position: fixed; bottom: 30px; left: 30px; background: rgba(16, 185, 129, 0.95);
+            color: #fff; padding: 16px 26px; border-radius: 20px; font-weight: 800; font-size: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; gap: 10px;
+            border: 1px solid #fff;
+        }
+
+        /* Footer */
+        footer { padding: 60px 40px; background: #030509; border-top: 1px solid var(--border-light); text-align: center; color: var(--text-muted); font-size: 14px; }
+        
+        /* GSAP Reveal */
+        .gsap-reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
+        .gsap-reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <!-- Top Notification Banner -->
+    <div class="top-banner">
+        <span class="banner-pulse"></span>
+        <span>🔥 تخفیف ویژه فصل بهار: ارسال رایگان با تیپاکس و پست پیشتاز برای سفارش‌های بالای ۲ میلیون تومان به سراسر کشور!</span>
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#" class="brand">
+            <div class="brand-logo">🏍️</div>
+            <span>تیزرو یدک پرو مکس</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#products" class="active">قطعات انجین و گیربکس</a></li>
+            <li><a href="#products">اگزوز و تیونینگ (Akrapovic)</a></li>
+            <li><a href="#products">سیستم ترمز و لنت (Brembo)</a></li>
+            <li><a href="#tuning-compare">مقایسه تیونینگ</a></li>
+            <li><a href="#faq">ضمانت اصالت و مشاوره فنی</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn-cart" onclick="openCart()">
+                <span>🛒 سبد خرید شما</span>
+                <span class="cart-badge" id="cart-count">۰</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="gsap-reveal">
+            <div class="hero-tag">⚡ بزرگ‌ترین مرکز تخصصی تیونینگ و قطعات اورجینال در ایران</div>
+            <h1>ارتقای قدرت و سرعت موتور با <br><span class="highlight">لوازم یدکی اورجینال</span></h1>
+            <p class="lead">عرضه مستقیم و بدون واسطه قطعات تیونینگ، اگزوزهای کربنی آکراپوویچ، لنت‌های سرامیکی برامبو و کمک‌فنرهای قهرمانی برای انواع هندا کلیک، بنلی، یاماها NMAX و موتورهای سنگین با ضمانت ۷ روزه اصالت کالا.</p>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <a href="#parts-finder" class="btn-primary">🔍 جستجوی قطعه بر اساس مدل موتور ←</a>
+                <a href="tel:0215550199" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-light); color: #fff; padding: 16px 28px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; display: inline-flex; align-items: center; gap: 8px;">📞 مشاوره فنی رایگان با استادکار</a>
+            </div>
+        </div>
+
+        <div class="hero-card-3d gsap-reveal" id="tilt-card">
+            <span class="card-badge-top">🔥 پرفروش‌ترین هفته</span>
+            <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80" alt="اگزوز قهرمانی آکراپوویچ کربن" class="hero-img">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding: 0 10px;">
+                <div>
+                    <div style="font-size: 20px; font-weight: 900; color: #fff;">اگزوز قهرمانی Akrapovic کربن اصلی</div>
+                    <div style="font-size: 13px; color: var(--text-muted);">مخصوص هندا کلیک، بنلی ۳۰۰ و یاماها XMAX</div>
+                </div>
+                <div style="text-align: left;">
+                    <div style="font-size: 13px; color: var(--text-muted); text-decoration: line-through;">۹,۵۰۰,۰۰۰ تومان</div>
+                    <div style="font-size: 22px; font-weight: 900; color: var(--orange);">۸,۲۰۰,۰۰۰ <span>تومان</span></div>
+                </div>
+            </div>
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: var(--cyan); text-align: center; font-weight: 800;">
+                💡 نکته: برای مشاهده جلوه ۳بعدی، ماوس را روی کارت حرکت دهید
+            </div>
+        </div>
+    </header>
+
+    <!-- SMART MOTORCYCLE PARTS FINDER -->
+    <section class="finder-section gsap-reveal" id="parts-finder">
+        <div class="finder-box">
+            <div class="finder-title">🏍️ موتور جستجوی هوشمند قطعات (سازگاری ۱۰۰٪ با موتور شما)</div>
+            <div class="finder-sub">برند و مدل موتورسیکلت خود را انتخاب کنید تا قطعات اورجینال و تیونینگ سازگار نمایش داده شود:</div>
+            
+            <div class="finder-grid">
+                <div class="form-group">
+                    <label>۱. برند و مدل موتورسیکلت شما:</label>
+                    <select class="form-select" id="moto-model-select" onchange="filterParts()">
+                        <option value="all">⚡ نمایش تمام مدل‌ها (هندا، بنلی، یاماها، کویر، وسپا...)</option>
+                        <option value="click">هندا کلیک ۱۲۵ / ۱۵۰ (Honda Click / Vario)</option>
+                        <option value="benelli">بنلی ۳۰۰ / ۲۵۰ تک و جفت سیلندر (Benelli TNT / VLR)</option>
+                        <option value="yamaha">یاماها ان‌مکس و ایکس‌مکس (Yamaha NMAX / XMAX / Aerox)</option>
+                        <option value="ns">پالس ان‌اس ۲۰۰ / آر‌اس (Bajaj Pulsar NS200 / RS)</option>
+                        <option value="vespa">وسپا پریماورا / جی‌تی‌اس (Vespa GTS / Primavera)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>۲. دسته‌بندی قطعه مورد نظر:</label>
+                    <select class="form-select" id="part-cat-select" onchange="filterParts()">
+                        <option value="all">🔧 تمام قطعات (انجین، ترمز، اگزوز، برق، بدنه...)</option>
+                        <option value="engine">قطعات موتوری، تسمه تایم و کلاچ (CVT)</option>
+                        <option value="brake">سیستم ترمز، دیسک و لنت سرامیکی (Brembo)</option>
+                        <option value="tuning">اگزوز قهرمانی و هدرز تیونینگ (Exhaust)</option>
+                        <option value="light">چراغ‌های LED هدلایت و زنون نئونی</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button class="btn-search" style="width: 100%;" onclick="filterParts()">
+                        🔍 جستجوی فوری قطعات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BADGES IN IRAN -->
+    <div class="trust-grid">
+        <div class="trust-card gsap-reveal">
+            <div class="trust-icon">🛡️</div>
+            <div class="trust-title">ضمانت ۱۰۰٪ اصالت کالا</div>
+            <div class="trust-desc">هفت روز مهلت تست و بازگشت وجه بی‌قید و شرط در صورت مغایرت با نمونه اورجینال</div>
+        </div>
+        <div class="trust-card gsap-reveal">
+            <div class="trust-icon">⚡</div>
+            <div class="trust-title">ارسال فوری در سراسر کشور</div>
+            <div class="trust-desc">تحویل ۲ ساعته با پیک در تهران و ارسال ۱ روزه با تیپاکس و پست پیشتاز به کل شهرستان‌ها</div>
+        </div>
+        <div class="trust-card gsap-reveal">
+            <div class="trust-icon">💳</div>
+            <div class="trust-title">پرداخت امن شتاب و محل</div>
+            <div class="trust-desc">امکان پرداخت آنلاین با کارت‌های عضو شتاب و پرداخت در محل برای سفارش‌های تهران</div>
+        </div>
+        <div class="trust-card gsap-reveal">
+            <div class="trust-icon">👨‍🔧</div>
+            <div class="trust-title">مشاوره فنی با استادکار</div>
+            <div class="trust-desc">راهنمایی تخصصی نصب و تیونینگ توسط مکانیک‌ها و تیونرهای حرفه‌ای موتورسیکلت</div>
+        </div>
+    </div>
+
+    <!-- PRODUCTS GRID SECTION -->
+    <section class="section-box" id="products">
+        <div class="section-header gsap-reveal">
+            <div>
+                <h2>محصولات ویژه و کیت‌های تیونینگ</h2>
+                <p>انتخابی حرفه‌ای برای تیونرهای سخت‌پسند و موتورسواران حرفه‌ای</p>
+            </div>
+            <div style="font-size: 14px; font-weight: 800; color: var(--orange);">● نمایش قطعات موجود در انبار مرکزی تهران</div>
+        </div>
+
+        <div class="products-grid" id="product-grid-container">
+            <!-- Product 1 -->
+            <div class="product-card gsap-reveal" data-model="click benelli yamaha" data-cat="tuning">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۱۵٪ تخفیف</span>
+                    <span class="compatible-tag">هندا کلیک / بنلی / یاماها</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Akrapovic_exhaust_on_motorcycle.jpg" alt="اگزوز آکراپوویچ" class="prod-img">
+                </div>
+                <div class="prod-cat">اگزوز و تیونینگ قهرمانی</div>
+                <h3 class="prod-title">اگزوز کربنی Akrapovic اسلیپ‌آن با سایلنسر</h3>
+                <p class="prod-desc">افزایش ۳.۵ اسب بخار قدرت انجین، کاهش وزن ۴۰ درصدی نسبت به اگزوز فابریک همراه با صدای بم و حرفه‌ای.</p>
+                <div class="prod-footer">
+                    <div class="price-box">
+                        <span class="old-price">۹,۵۰۰,۰۰۰ تومان</span>
+                        <span class="new-price">۸,۲۰۰,۰۰۰ <span>تومان</span></span>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('اگزوز کربنی Akrapovic', 8200000)">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card gsap-reveal" data-model="click yamaha ns vespa" data-cat="brake">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۱۰٪ تخفیف</span>
+                    <span class="compatible-tag">تمام اسکوترها و موتورهای دنده‌ای</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Brembo_brakes_on_a_motorcycle.jpg" alt="لنت ترمز برامبو" class="prod-img">
+                </div>
+                <div class="prod-cat">سیستم ترمز و لنت</div>
+                <h3 class="prod-title">لنت ترمز سرامیکی Brembo اصلی ایتالیا (جفت)</h3>
+                <p class="prod-desc">گیرایی فوق‌العاده در سرعت‌های بالا و مسیرهای بارانی، بدون تولید صدا و سایش دیسک ترمز، طول عمر ۳ برابری.</p>
+                <div class="prod-footer">
+                    <div class="price-box">
+                        <span class="old-price">۱,۴۵۰,۰۰۰ تومان</span>
+                        <span class="new-price">۱,۲۸۰,۰۰۰ <span>تومان</span></span>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('لنت ترمز سرامیکی Brembo', 1280000)">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card gsap-reveal" data-model="click yamaha vespa" data-cat="engine">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">اورجینال ژاپن</span>
+                    <span class="compatible-tag">هندا کلیک / یاماها NMAX / وسپا</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Scooter_CVT_transmission_belt.jpg" alt="تسمه تایم باندو" class="prod-img">
+                </div>
+                <div class="prod-cat">سیستم انتقال قدرت (CVT)</div>
+                <h3 class="prod-title">تسمه درایو (تسمه کلاچ) Bando اصلی ژاپن</h3>
+                <p class="prod-desc">مقاوم در برابر حرارت بالا و کشش شدید، حذف کامل لرزش موتور در شروع حرکت و شتاب‌گیری بی‌نقص اسکوتر.</p>
+                <div class="prod-footer">
+                    <div class="price-box">
+                        <span class="old-price">۲,۱۰۰,۰۰۰ تومان</span>
+                        <span class="new-price">۱,۸۹۰,۰۰۰ <span>تومان</span></span>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('تسمه درایو Bando ژاپن', 1890000)">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card gsap-reveal" data-model="benelli ns yamaha" data-cat="tuning">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">ویژه ریسینگ</span>
+                    <span class="compatible-tag">بنلی ۳۰۰ / پالس NS / یاماها R25</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Motorcycle_chain_and_sprocket.jpg" alt="کمک فنر اولینز" class="prod-img">
+                </div>
+                <div class="prod-cat">سیستم تعلیق و هندلینگ</div>
+                <h3 class="prod-title">کمک‌فنر گازی قابل تنظیم Öhlins ریسینگ طلایی</h3>
+                <p class="prod-desc">هندلینگ فوق‌العاده در پیچ‌های تند، قابلیت تنظیم میزان نرمی و سختی (Rebound) متناسب با وزن و جاده‌های ایران.</p>
+                <div class="prod-footer">
+                    <div class="price-box">
+                        <span class="old-price">۱۸,۵۰۰,۰۰۰ تومان</span>
+                        <span class="new-price">۱۶,۴۰۰,۰۰۰ <span>تومان</span></span>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('کمک‌فنر گازی Öhlins', 1640000)">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card gsap-reveal" data-model="click benelli yamaha ns vespa" data-cat="light">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۲۰٪ تخفیف</span>
+                    <span class="compatible-tag">نصب فابریک روی تمام موتورها</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Motorcycle_headlight_LED.jpg" alt="هدلایت LED" class="prod-img">
+                </div>
+                <div class="prod-cat">سیستم برق و روشنایی</div>
+                <h3 class="prod-title">هدلایت LED نسل ۸ حرفه‌ای ۶۰۰۰ لومن (سفید یخی)</h3>
+                <p class="prod-desc">پرتاب نور فوق‌العاده تا ۱۵۰ متر در شب، مصرف برق بسیار پایین بدون آسیب به بوبین و باتری موتور همراه با فن خنک‌کننده.</p>
+                <div class="prod-footer">
+                    <div class="price-box">
+                        <span class="old-price">۱,۲۰۰,۰۰۰ تومان</span>
+                        <span class="new-price">۹۵۰,۰۰۰ <span>تومان</span></span>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('هدلایت LED نسل ۸', 950000)">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card gsap-reveal" data-model="click benelli yamaha ns vespa" data-cat="engine">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">تضمین اصالت</span>
+                    <span class="compatible-tag">انواع اسکوتر و موتور دنده‌ای</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Spark_plug_NGK_BPR6ES.jpg" alt="شمع ایریدیم NGK" class="prod-img">
+                </div>
+                <div class="prod-cat">قطعات احتراق و برق انجین</div>
+                <h3 class="prod-title">شمع سوزنی ایریدیم NGK لیزری اصل ژاپن</h3>
+                <p class="prod-desc">احتراق ۱۰۰٪ کامل سوخت، افزایش چشمگیر شتاب موتور و کاهش مصرف بنزین، روشن شدن فوری در سردترین روزهای زمستان.</p>
+                <div class="prod-footer">
+                    <div class="price-box">
+                        <span class="old-price">۷۵۰,۰۰۰ تومان</span>
+                        <span class="new-price">۶۲۰,۰۰۰ <span>تومان</span></span>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('شمع ایریدیم NGK ژاپن', 620000)">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEFORE & AFTER TUNING COMPARISON -->
+    <section class="section-box" id="tuning-compare">
+        <div class="section-header gsap-reveal">
+            <div>
+                <h2>مقایسه قبل و بعد از تیونینگ در تیزرو یدک</h2>
+                <p>خط وسط تصویر را با ماوس یا انگشت به چپ و راست بکشید تا تفاوت شتاب، ظاهر و قدرت موتور را ببینید:</p>
+            </div>
+        </div>
+        <div class="comp-container gsap-reveal">
+            <div class="comp-layer comp-before">
+                <span class="comp-badge" style="border-color: #ef4444; color: #ef4444;">❌ موتور فابریک کارخانه (اگزوز سنگین و شتاب معمولی)</span>
+            </div>
+            <div class="comp-layer comp-after" id="comp-after-layer">
+                <span class="comp-badge" style="border-color: var(--orange); color: var(--orange);">✨ تیونینگ کامل تیزرو یدک (کربن آکراپوویچ + شتاب قهرمانی)</span>
+            </div>
+            <input type="range" class="comp-slider-input" min="0" max="100" value="50" oninput="updateComp(this.value)">
+        </div>
+    </section>
+
+    <!-- SHOPPING CART SIDEBAR MODAL -->
+    <div class="cart-overlay" id="cart-modal" onclick="if(event.target===this) closeCart()">
+        <div class="cart-sidebar">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 20px;">
+                    <span style="font-size: 20px; font-weight: 900; color: var(--orange);">🛒 سبد خرید شما</span>
+                    <button onclick="closeCart()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">×</button>
+                </div>
+                <div id="cart-items-box" style="max-height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+                    <!-- Cart items inserted by JS -->
+                    <div style="color: var(--text-muted); text-align: center; padding: 40px 0;">سبد خرید شما در حال حاضر خالی است.</div>
+                </div>
+            </div>
+            <div>
+                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+                        <span>هزینه ارسال با تیپاکس / پیک:</span>
+                        <span style="color: #34d399; font-weight: 800;">رایگان (هدیه ویژه)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; color: #fff; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px;">
+                        <span>مبلغ قابل پرداخت:</span>
+                        <span style="color: var(--orange);" id="cart-total-price">۰ <span>تومان</span></span>
+                    </div>
+                </div>
+                <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="checkout()">
+                    🚀 ثبت نهایی سفارش و پرداخت درگاه شتاب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">
+        <span>✅</span>
+        <span id="toast-msg">قطعه به سبد خرید اضافه شد!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer id="faq">
+        <p style="font-size: 22px; color: #fff; font-weight: 900; margin-bottom: 10px;">تیزرو یدک پرو مکس | TIZRO YADAK MOTO</p>
+        <p style="margin-bottom: 24px;">آدرس دفتر مرکزی و فروشگاه حضوری: تهران، میدان گمرک (رازی)، خیابان هلال احمر، مجتمع تجاری نگین گمرک، پلاک ۱۱۴ | تلفن پاسخگویی: <strong style="color: var(--orange);">۰۲۱-۵۵۵۰۱۹۹</strong></p>
+        <p>© ۱۴۰۵ تمامی حقوق مادی و معنوی این وب‌سایت متعلق به تیزرو یدک بوده و طراحی شده بر اساس استانداردهای UI/UX Pro Max است.</p>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // 1. Scroll Reveal Engine
+        function initReveal() {
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                document.querySelectorAll('.gsap-reveal').forEach(el => {
+                    gsap.fromTo(el, { opacity: 0, y: 40 }, {
+                        opacity: 1, y: 0, duration: 0.8,
+                        scrollTrigger: { trigger: el, start: "top 88%" }
+                    });
+                });
+            } else {
+                const checkScroll = () => {
+                    document.querySelectorAll('.gsap-reveal').forEach(el => {
+                        if (el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
+                    });
+                };
+                window.addEventListener('scroll', checkScroll);
+                checkScroll();
+            }
+        }
+        window.addEventListener('DOMContentLoaded', initReveal);
+
+        // 2. 3D Hero Card Tilt Effect
+        const tiltCard = document.getElementById('tilt-card');
+        if (tiltCard) {
+            tiltCard.addEventListener('mousemove', e => {
+                const rect = tiltCard.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                tiltCard.style.transform = `rotateY(${x * 0.04}deg) rotateX(${-y * 0.04}deg) scale(1.03)`;
+            });
+            tiltCard.addEventListener('mouseleave', () => {
+                tiltCard.style.transform = 'rotateY(12deg) rotateX(6deg)';
+            });
+        }
+
+        // 3. Smart Motorcycle Parts Finder
+        function filterParts() {
+            const model = document.getElementById('moto-model-select').value;
+            const cat = document.getElementById('part-cat-select').value;
+            const cards = document.querySelectorAll('.product-card');
+            let foundCount = 0;
+
+            cards.forEach(card => {
+                const cardModels = card.getAttribute('data-model');
+                const cardCat = card.getAttribute('data-cat');
+                
+                const matchModel = (model === 'all' || cardModels.includes(model));
+                const matchCat = (cat === 'all' || cardCat === cat);
+
+                if (matchModel && matchCat) {
+                    card.style.display = 'flex';
+                    foundCount++;
+                    if (typeof gsap !== 'undefined') {
+                        gsap.fromTo(card, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4 });
+                    }
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            showToast(`🔍 تعداد ${foundCount} قطعه سازگار با انتخاب شما پیدا شد!`);
+        }
+
+        // 4. Shopping Cart Management
+        let cart = [];
+        let totalToman = 0;
+
+        function addToCart(title, price) {
+            cart.push({ title, price });
+            totalToman += price;
+            updateCartUI();
+            showToast(`✅ «${title}» به سبد خرید اضافه شد!`);
+            if (typeof confetti !== 'undefined' && cart.length === 1) {
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.8 } });
+            }
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length.toLocaleString('fa-IR');
+            const box = document.getElementById('cart-items-box');
+            
+            if (cart.length === 0) {
+                box.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 40px 0;">سبد خرید شما در حال حاضر خالی است.</div>';
+            } else {
+                box.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'cart-item';
+                    el.innerHTML = `
+                        <span class="cart-item-title">${index + ۱}. ${item.title}</span>
+                        <span class="cart-item-price">${item.price.toLocaleString('fa-IR')} تومان</span>
+                    `;
+                    box.appendChild(el);
+                });
+            }
+            document.getElementById('cart-total-price').innerHTML = `${totalToman.toLocaleString('fa-IR')} <span>تومان</span>`;
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+        function checkout() {
+            if (cart.length === 0) {
+                alert("⚠️ سبد خرید شما خالی است! لطفاً ابتدا قطعات مورد نظرتان را انتخاب کنید.");
+                return;
+            }
+            closeCart();
+            if (typeof confetti !== 'undefined') {
+                confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+            }
+            alert(`🎉 سفارش شما به مبلغ نهایی ${totalToman.toLocaleString('fa-IR')} تومان با موفقیت ثبت شد!\n\nکارشناسان تیزرو یدک جهت هماهنگی ارسال فوری با شما تماس خواهند گرفت.`);
+            cart = []; totalToman = 0; updateCartUI();
+        }
+
+        // 5. Before/After Tuning Slider
+        function updateComp(val) {
+            document.getElementById('comp-after-layer').style.width = `${val}%`;
+        }
+
+        // 6. Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>یدک‌بانو (YadakBanoo AI) | اولین فروشگاه ایجنتیک لوازم یدکی موتورسیکلت در ایران</title>
+    <!-- GSAP & Confetti -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg: #060913;
+            --surface: #0c1222;
+            --surface-hover: #131d36;
+            --surface-card: #111a30;
+            --turquoise: #00A99D; /* فیروزه ایرانی - رنگ رسمی برند از README */
+            --turquoise-glow: rgba(0, 169, 157, 0.35);
+            --orange: #ff6600;
+            --orange-glow: rgba(255, 102, 0, 0.35);
+            --purple: #7C3AED;
+            --red: #ef4444;
+            --green: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(0, 169, 157, 0.25);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --font-fa: 'Vazirmatn', Tahoma, IRANSans, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-fa); }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 169, 157, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 45%);
+            background-attachment: fixed;
+            line-height: 1.7;
+        }
+
+        /* Top Notification Banner */
+        .top-banner {
+            background: linear-gradient(90deg, #090d16, #003834, #090d16);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px; text-align: center; font-size: 13px; font-weight: 800;
+            color: var(--turquoise); position: relative; z-index: 100;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+        }
+        .banner-pulse { width: 8px; height: 8px; background: #34d399; border-radius: 50%; box-shadow: 0 0 10px #34d399; animation: ping 1.5s infinite; }
+        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+
+        /* Navbar */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; background: rgba(6, 9, 19, 0.92);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light);
+            position: sticky; top: 0; z-index: 90;
+        }
+        @media (max-width: 900px) { nav { padding: 16px 20px; flex-direction: column; gap: 14px; } }
+
+        .brand {
+            font-size: 26px; font-weight: 900;
+            background: linear-gradient(to left, #fff, var(--turquoise), var(--orange));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 12px; text-decoration: none;
+        }
+        .brand-logo {
+            width: 48px; height: 48px; background: linear-gradient(135deg, var(--turquoise), #007870);
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 900; font-size: 24px; box-shadow: 0 0 25px var(--turquoise-glow);
+        }
+
+        .nav-links { display: flex; gap: 24px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 14px; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--turquoise); }
+        @media (max-width: 900px) { .nav-links { display: none; } }
+
+        /* 3-TIER PRICING SWITCHER (B2C / B2B / WHOLESALE) */
+        .tier-switcher {
+            display: flex; background: rgba(0,0,0,0.6); border: 1px solid var(--border-light);
+            border-radius: 30px; padding: 4px; gap: 4px;
+        }
+        .tier-btn {
+            background: transparent; border: none; color: var(--text-muted);
+            padding: 8px 16px; border-radius: 26px; font-size: 12px; font-weight: 800;
+            cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 6px;
+        }
+        .tier-btn.active {
+            background: var(--turquoise); color: #000; box-shadow: 0 0 15px var(--turquoise-glow);
+        }
+
+        .btn-cart {
+            background: rgba(0, 169, 157, 0.15); border: 1px solid var(--turquoise);
+            color: #fff; font-weight: 800; font-size: 14px; padding: 10px 22px;
+            border-radius: 30px; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-cart:hover { background: var(--turquoise); color: #000; box-shadow: 0 0 25px var(--turquoise-glow); }
+        .cart-badge { background: var(--orange); color: #000; font-size: 12px; padding: 2px 8px; border-radius: 20px; font-weight: 900; }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 60px 50px 80px; max-width: 1350px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: 50px;
+        }
+        @media (max-width: 992px) { .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 20px; } }
+
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0, 169, 157, 0.12); border: 1px solid var(--turquoise);
+            color: var(--turquoise); padding: 8px 20px; border-radius: 30px;
+            font-size: 13px; font-weight: 800; margin-bottom: 20px;
+        }
+        h1 { font-size: 52px; font-weight: 900; line-height: 1.18; margin-bottom: 20px; }
+        @media (max-width: 768px) { h1 { font-size: 34px; } }
+        h1 span.highlight {
+            background: linear-gradient(135deg, var(--turquoise), var(--orange), #fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 35px rgba(0, 169, 157, 0.3);
+        }
+        p.lead { font-size: 18px; color: var(--text-muted); max-width: 620px; margin-bottom: 30px; }
+        @media (max-width: 992px) { p.lead { margin: 0 auto 30px; } }
+
+        .slogan-box {
+            background: rgba(255, 255, 255, 0.03); border-right: 4px solid var(--orange);
+            padding: 14px 20px; border-radius: 12px; font-size: 20px; font-weight: 900; color: #fff;
+            margin-bottom: 34px; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--turquoise), #007870);
+            color: #000; font-weight: 900; font-size: 16px; padding: 16px 36px;
+            border-radius: 30px; border: none; cursor: pointer; text-decoration: none;
+            box-shadow: 0 0 35px var(--turquoise-glow); transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 0 50px var(--turquoise); }
+
+        /* Dr. Banoo AI Influencer Card */
+        .influencer-card {
+            background: var(--surface); border: 2px solid var(--turquoise);
+            border-radius: 32px; padding: 26px; backdrop-filter: blur(25px);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 40px var(--turquoise-glow);
+            position: relative; overflow: hidden;
+        }
+        .influencer-img {
+            width: 100%; height: 380px; object-fit: cover; border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+        .inf-badge-top {
+            position: absolute; top: 42px; left: 42px; background: rgba(0,0,0,0.85);
+            border: 1px solid var(--orange); color: var(--orange); padding: 8px 16px;
+            border-radius: 20px; font-size: 12px; font-weight: 900; backdrop-filter: blur(10px);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .inf-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; text-align: center; }
+        .inf-stat-box { background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); padding: 10px; border-radius: 16px; }
+        .inf-val { font-size: 20px; font-weight: 900; color: var(--turquoise); }
+        .inf-lbl { font-size: 11px; color: var(--text-muted); }
+
+        /* SMART PARTS FINDER & AI PHOTO DIAGNOSIS */
+        .finder-section { max-width: 1300px; margin: 0 auto 80px; padding: 0 24px; }
+        .finder-box {
+            background: linear-gradient(135deg, #0e1626, #1a1122);
+            border: 2px solid var(--orange); border-radius: 36px; padding: 40px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 40px var(--orange-glow);
+        }
+        .finder-title { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .finder-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 26px; }
+        
+        .finder-grid { display: grid; grid-template-columns: 1.5fr 1.5fr 1.2fr; gap: 20px; align-items: center; }
+        @media (max-width: 900px) { .finder-grid { grid-template-columns: 1fr; } }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 14px; font-weight: 800; color: #fff; }
+        .form-select, .form-input {
+            width: 100%; padding: 16px 20px; background: rgba(0,0,0,0.6);
+            border: 1px solid var(--border-light); border-radius: 16px; color: #fff; font-size: 15px; font-weight: 700;
+            outline: none; transition: all 0.3s;
+        }
+        .form-select:focus, .form-input:focus { border-color: var(--turquoise); box-shadow: 0 0 15px var(--turquoise-glow); }
+        .form-select option { background: #0b111e; color: #fff; padding: 10px; }
+
+        .btn-photo-diag {
+            background: linear-gradient(135deg, var(--purple), #5b21b6); color: #fff;
+            font-weight: 900; font-size: 15px; padding: 16px; border-radius: 16px; border: none;
+            cursor: pointer; transition: all 0.3s; box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
+            display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+        }
+        .btn-photo-diag:hover { transform: translateY(-2px); box-shadow: 0 0 40px var(--purple); }
+
+        /* THE 7 AUTONOMOUS AI AGENTS ECOSYSTEM (EXACTLY FROM README) */
+        .agents-section { max-width: 1350px; margin: 0 auto 90px; padding: 0 24px; }
+        .section-title { text-align: center; font-size: 38px; font-weight: 900; margin-bottom: 12px; }
+        .section-sub { text-align: center; color: var(--text-muted); font-size: 17px; margin-bottom: 44px; max-width: 800px; margin-left: auto; margin-right: auto; }
+
+        .agents-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        @media (max-width: 1100px) { .agents-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .agents-grid { grid-template-columns: 1fr; } }
+        
+        .agent-card {
+            background: var(--surface-card); border: 1px solid var(--border-light); border-radius: 26px;
+            padding: 24px; position: relative; transition: all 0.3s; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .agent-card:hover { border-color: var(--turquoise); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px var(--turquoise-glow); }
+        .agent-status { position: absolute; top: 16px; left: 16px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
+        .agent-num { font-size: 12px; color: var(--turquoise); font-weight: 900; margin-bottom: 6px; }
+        .agent-name { font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .agent-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 18px; }
+        .agent-task { font-size: 12px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; color: var(--orange); font-weight: 700; border-right: 3px solid var(--orange); }
+
+        /* THE 45-SECOND CATALOG AI UPLOADER STUDIO */
+        .studio-section { max-width: 1350px; margin: 0 auto 90px; padding: 0 24px; }
+        .studio-box {
+            background: linear-gradient(135deg, #0d1628, #002b28);
+            border: 2px solid var(--turquoise); border-radius: 36px; padding: 44px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 50px var(--turquoise-glow);
+        }
+        .studio-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; flex-wrap: wrap; gap: 16px; }
+        .studio-title { font-size: 28px; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 12px; }
+        
+        .studio-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: start; }
+        @media (max-width: 992px) { .studio-grid { grid-template-columns: 1fr; } }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--turquoise), var(--orange)); color: #000;
+            font-weight: 900; font-size: 16px; padding: 18px; border-radius: 20px; border: none;
+            cursor: pointer; transition: all 0.3s; width: 100%; box-shadow: 0 0 35px var(--turquoise-glow); display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px;
+        }
+        .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--turquoise); }
+
+        .ai-output-box {
+            background: rgba(0,0,0,0.7); border: 1px solid var(--border); border-radius: 26px;
+            padding: 26px; min-height: 440px; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .output-img-wrap { width: 100%; height: 260px; border-radius: 18px; overflow: hidden; position: relative; margin-bottom: 16px; background: #131b30; }
+        .output-img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .output-details { background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); border-radius: 16px; padding: 16px; font-size: 13px; line-height: 1.8; color: var(--text-muted); }
+        .output-details strong { color: #fff; }
+        .price-calc-badge { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 169, 157, 0.15); border: 1px solid var(--turquoise); padding: 14px 20px; border-radius: 16px; margin-top: 14px; font-weight: 900; font-size: 17px; color: var(--turquoise); }
+
+        /* 3-TIER DYNAMIC PRODUCTS STORE */
+        .store-section { max-width: 1350px; margin: 0 auto 90px; padding: 0 24px; }
+        .store-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border-light); padding-bottom: 20px; flex-wrap: wrap; gap: 20px; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .products-grid { grid-template-columns: 1fr; } }
+
+        .product-card {
+            background: var(--surface); border: 1px solid var(--border-light); border-radius: 28px;
+            padding: 24px; position: relative; overflow: hidden; transition: all 0.3s;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .product-card:hover { border-color: var(--orange); transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 35px var(--orange-glow); }
+        .prod-img-wrap { width: 100%; height: 230px; border-radius: 20px; overflow: hidden; margin-bottom: 16px; position: relative; background: #0a0f1d; }
+        .prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .product-card:hover .prod-img { transform: scale(1.1); }
+        
+        .discount-badge { position: absolute; top: 12px; right: 12px; background: var(--red); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 900; }
+        .inf-rec-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.85); border: 1px solid var(--turquoise); color: var(--turquoise); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; }
+
+        .prod-title { font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+        .prod-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+        
+        .prod-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 16px; }
+        .old-price { font-size: 13px; color: var(--text-muted); text-decoration: line-through; }
+        .new-price { font-size: 22px; font-weight: 900; color: #fff; }
+        .new-price span { font-size: 13px; font-weight: 700; color: var(--orange); }
+
+        .btn-add {
+            background: rgba(255, 102, 0, 0.15); border: 1px solid var(--orange); color: var(--orange);
+            font-weight: 800; font-size: 13px; padding: 12px 20px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-add:hover { background: var(--orange); color: #000; box-shadow: 0 0 20px var(--orange-glow); }
+
+        /* SHOPPING CART SIDEBAR MODAL */
+        .cart-overlay {
+            position: fixed; top: 0; right: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            display: none; justify-content: flex-start; z-index: 1000;
+        }
+        .cart-sidebar {
+            width: 440px; max-width: 100%; height: 100vh; background: #080d1a;
+            border-left: 2px solid var(--turquoise); padding: 30px; display: flex; flex-direction: column;
+            justify-content: space-between; box-shadow: -20px 0 60px rgba(0,0,0,0.9);
+        }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 14px; }
+
+        /* TOAST NOTIFICATION */
+        #toast {
+            position: fixed; bottom: 30px; left: 30px; background: rgba(0, 169, 157, 0.95);
+            color: #000; padding: 16px 26px; border-radius: 20px; font-weight: 900; font-size: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; gap: 10px;
+            border: 1px solid #fff;
+        }
+
+        /* Footer */
+        footer { padding: 60px 40px; background: #030509; border-top: 1px solid var(--border-light); text-align: center; color: var(--text-muted); font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Notification Banner -->
+    <div class="top-banner">
+        <span class="banner-pulse"></span>
+        <span>🔥 اکوسیستم ایجنتیک «یدک‌بانو» (YadakBanoo AI) | ۱۲ میلیون موتور فعال، ۱ انبار ابری، مدیریت ۱۰۰٪ خودکار توسط ۷ ایجنت خودمختار و دکتر بانو</span>
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#" class="brand">
+            <div class="brand-logo">👩‍🔧</div>
+            <span>یدک‌بانو | YadakBanoo AI</span>
+        </a>
+        
+        <!-- 3-Tier Pricing Switcher from README -->
+        <div class="tier-switcher">
+            <button class="tier-btn active" id="tier-b2c" onclick="switchTier('b2c')">👤 مصرف‌کننده نهایی (خرده)</button>
+            <button class="tier-btn" id="tier-b2b" onclick="switchTier('b2b')">🔧 تعمیرگاه‌ها (۱۲٪ تخفیف + ارسال ۲ ساعته)</button>
+            <button class="tier-btn" id="tier-whole" onclick="switchTier('wholesale')">🏢 عمده‌فروشان (۲۲٪ تخفیف + تسویه ۳۰ روزه)</button>
+        </div>
+
+        <div class="nav-actions">
+            <button class="btn-cart" onclick="openCart()">
+                <span>🛒 سبد خرید شما</span>
+                <span class="cart-badge" id="cart-count">۰</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div>
+            <div class="hero-tag">✨ معرفی «دکتر بانو» – اینفلوئنسر و مکانیک متخصص هوش مصنوعی</div>
+            <h1>اولین فروشگاه ایجنتیک <br><span class="highlight">لوازم یدکی موتورسیکلت</span> در ایران</h1>
+            <div class="slogan-box">«قطعه درست، قیمت درست، بانو پشتته.»</div>
+            <p class="lead">پایان خرید سنتی از چراغ برق و گمرک! با اکوسیستم ایجنتیک یدک‌بانو، قطعه سازگار با شاسی موتور خود را در ۸ ثانیه با صفر درصد اشتباه پیدا کنید، قیمت شفاف و داینامیک بگیرید و از آموزش‌های ویدیویی دکتر بانو لذت ببرید.</p>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <a href="#parts-finder" class="btn-primary">🔍 قطعه‌یاب هوشمند با عکس و مدل ←</a>
+                <a href="#studio" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-light); color: #fff; padding: 16px 28px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; display: inline-flex; align-items: center; gap: 8px;">🤖 استودیوی کاتالوگ Nano Banana</a>
+            </div>
+        </div>
+
+        <div class="influencer-card">
+            <span class="inf-badge-top"><span class="banner-pulse"></span> دکتر بانو – AI Mechanic Influencer</span>
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="دکتر بانو" class="influencer-img">
+            <div style="font-size: 22px; font-weight: 900; color: #fff; margin-top: 16px;">دکتر بانو | مکانیک متخصص همه موتورها</div>
+            <div style="font-size: 13px; color: var(--text-muted);">تخصص: آموزش تعویض قطعات، تشخیص جنس تقلبی در ۳۰ ثانیه</div>
+            <div class="inf-stats">
+                <div class="inf-stat-box"><div class="inf-val">۳ ویدیو</div><div class="inf-lbl">تولید خودکار روزانه</div></div>
+                <div class="inf-stat-box"><div class="inf-val">۰٪ اشتباه</div><div class="inf-lbl">تشخیص قطعه با عکس</div></div>
+                <div class="inf-stat-box"><div class="inf-val">۲۴/۷</div><div class="inf-lbl">پشتیبانی در تلگرام/واتساپ</div></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SMART PARTS FINDER & AI PHOTO DIAGNOSIS (FROM README) -->
+    <section class="finder-section" id="parts-finder">
+        <div class="finder-box">
+            <div class="finder-title">🏍️ قطعه‌یاب هوشمند یدک‌بانو (انتخاب مدل موتور یا تشخیص با عکس قطعه خراب)</div>
+            <div class="finder-sub">مدل موتور را انتخاب کنید یا عکس قطعه خراب را آپلود کنید تا ایجنت هوش مصنوعی قطعه سازگار را در ۸ ثانیه با ۰٪ اشتباه پیدا کند:</div>
+            
+            <div class="finder-grid">
+                <div class="form-group">
+                    <label>۱. انتخاب مدل موتورسیکلت (۶۵٪ سهم بازار سال ۱):</label>
+                    <select class="form-select" id="moto-model-select" onchange="filterParts()">
+                        <option value="all">⚡ نمایش تمام مدل‌ها (هوندا ۱۲۵، باکسر، کلیک، پالس، آپاچی...)</option>
+                        <option value="honda125">هوندا ۱۲۵ / سی‌جی (Honda CG 125 - مدل‌های ۹۰ تا ۱۴۰۳)</option>
+                        <option value="boxer">باکسر ۱۵۰ / ان‌ام (Bajaj Boxer 150)</option>
+                        <option value="click">هوندا کلیک ۱۲۵ / ۱۵۰ و واریو (Honda Click / Vario)</option>
+                        <option value="pulsar">پالس ان‌اس ۲۰۰ / آپاچی ۱۸۰ (Pulsar NS / Apache)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>۲. دسته‌بندی قطعه مورد نظر:</label>
+                    <select class="form-select" id="part-cat-select" onchange="filterParts()">
+                        <option value="all">🔧 تمام دسته‌ها (لنت، تسمه، صفحه کلاچ، اگزوز، روغن...)</option>
+                        <option value="brake">لنت ترمز و دیسک (بزرگ‌ترین آمار تقلبی در بازار)</option>
+                        <option value="clutch">صفحه کلاچ و تسمه درایو (CVT)</option>
+                        <option value="engine">قطعات موتوری، شمع ایریدیم و سیلندر</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button class="btn-photo-diag" onclick="simulatePhotoDiagnosis()">
+                        <span>📸 آپلود عکس قطعه خراب (تشخیص AI)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE 7 AUTONOMOUS AI AGENTS ECOSYSTEM (EXACTLY FROM README) -->
+    <section class="agents-section" id="agents">
+        <div class="section-title">اکوسیستم ۷ ایجنت خودمختار یدک‌بانو</div>
+        <div class="section-sub">Moat ما ایجنت‌ها هستند، نه انبار! ۹۰٪ کارهای فروشگاه بدون انسان، با حاشیه عملیاتی زیر ۴٪ و سرعت ۱۰۰ برابر رقبا انجام می‌شود</div>
+        
+        <div class="agents-grid">
+            <!-- Agent 1 -->
+            <div class="agent-card">
+                <span class="agent-status">● رصد لحظه‌ای بازار</span>
+                <div class="agent-num">AGENT 01</div>
+                <h3 class="agent-name"><span>📊</span> Product Hunter Agent</h3>
+                <p class="agent-desc">قیمت رقبا در دیجی‌کالا، یدک‌لند و چراغ برق را لحظه‌ای رصد می‌کند؛ اجرای قیمت‌گذاری داینامیک برای تضمین کمترین قیمت.</p>
+                <div class="agent-task">فعالیت اخیر: تنظیم قیمت صفحه کلاچ باکسر ۴٪ زیر دیجی‌کالا</div>
+            </div>
+
+            <!-- Agent 2 -->
+            <div class="agent-card">
+                <span class="agent-status">● Gemini Nano Banana</span>
+                <div class="agent-num">AGENT 02</div>
+                <h3 class="agent-name"><span>📸</span> Catalog AI Agent</h3>
+                <p class="agent-desc">عکس موبایلی قطعه را می‌گیرد ➔ حذف پس‌زمینه ➔ تولید ۴ عکس تبلیغاتی استودیویی، سئو فارسی و ویدیوی نصب در ۴۵ ثانیه.</p>
+                <div class="agent-task">فعالیت اخیر: انتشار خودکار لنت هوندا با ۴ رندر در ترب و ایمالز</div>
+            </div>
+
+            <!-- Agent 3 -->
+            <div class="agent-card">
+                <span class="agent-status">● آنلاین در تلگرام/واتساپ</span>
+                <div class="agent-num">AGENT 03</div>
+                <h3 class="agent-name"><span>👩‍🔧</span> Mechanic Support (دکتر بانو)</h3>
+                <p class="agent-desc">چت‌بات ۲۴/۷ فارسی سلیس؛ عکس قطعه خراب مشتری را تشخیص می‌دهد، قطعه مناسب را پیشنهاد می‌دهد و سفارش ثبت می‌کند.</p>
+                <div class="agent-task">فعالیت اخیر: تشخیص خرابی تسمه تایم کلیک و ثبت سفارش دایرکت</div>
+            </div>
+
+            <!-- Agent 4 -->
+            <div class="agent-card">
+                <span class="agent-status">● نرخ تبدیل ۲۷٪</span>
+                <div class="agent-num">AGENT 04</div>
+                <h3 class="agent-name"><span>💼</span> Sales & CRM Agent</h3>
+                <p class="agent-desc">پیگیری سبدهای رهاشده؛ ارسال پیامک یادآوری دوره‌ای: «روغن موتورت وقت تعویضشه!» و تبدیل تعمیرگاه‌ها به مشتریان B2B.</p>
+                <div class="agent-task">فعالیت اخیر: ارسال پیامک یادآوری تعویض روغن به ۳۴۰ موتورسوار</div>
+            </div>
+
+            <!-- Agent 5 -->
+            <div class="agent-card">
+                <span class="agent-status">● روزی ۳ محتوا</span>
+                <div class="agent-num">AGENT 05</div>
+                <h3 class="agent-name"><span>🎬</span> Content Factory Agent</h3>
+                <p class="agent-desc">تولید خودکار روزی ۳ ویدیوی وایرال برای اینستاگرام ریلز، یوتیوب Shorts و تلگرام با صدا و چهره دکتر بانو (Remotion Pipeline).</p>
+                <div class="agent-task">فعالیت اخیر: رندر ویدیوی «تشخیص لنت تقلبی هوندا در ۳۰ ثانیه»</div>
+            </div>
+
+            <!-- Agent 6 -->
+            <div class="agent-card">
+                <span class="agent-status">● گوگل ادز / یکتانت</span>
+                <div class="agent-num">AGENT 06</div>
+                <h3 class="agent-name"><span>🚀</span> Ads & Growth Agent</h3>
+                <p class="agent-desc">مدیریت خودکار کمپین‌های تبلیغاتی در گوگل ادز، یکتانت، ترب و ایمالز؛ بهینه‌سازی کلمات کلیدی پرسرچ مانند «لنت هوندا».</p>
+                <div class="agent-task">فعالیت اخیر: بهینه‌سازی بید کلمه کلیدی «صفحه کلاچ باکسر» در ترب</div>
+            </div>
+
+            <!-- Agent 7 -->
+            <div class="agent-card" style="grid-column: span 2;">
+                <span class="agent-status">● بدون دخالت انسان</span>
+                <div class="agent-num">AGENT 07</div>
+                <h3 class="agent-name"><span>⚙️</span> Operations Agent (لجستیک و انبارداری اتوماتیک)</h3>
+                <p class="agent-desc">صدور آنی فاکتور رسمی، هماهنگی با انبار، دریافت کد رهگیری پستی/تیپاکس، درخواست پیک موتوری ۲ ساعته در تهران و ارسال پیامک تحویل کالا به مشتری.</p>
+                <div class="agent-task">فعالیت اخیر: صدور فاکتور رسمی ۱۸ میلیون تومانی برای «تعمیرگاه برادران رضایی» و ارسال با پیک فوری</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE 45-SECOND CATALOG AI UPLOADER STUDIO (GEMINI NANO BANANA) -->
+    <section class="studio-section" id="studio">
+        <div class="studio-box">
+            <div class="studio-header">
+                <div class="studio-title">🤖 استودیوی کاتالوگ Nano Banana (تولید محصول ۴۵ ثانیه‌ای)</div>
+                <span style="background: var(--turquoise); color: #000; font-size: 13px; font-weight: 900; padding: 6px 16px; border-radius: 20px;">● هزینه: فقط ۰.۱۶ دلار / محصول (۱۰۰ برابر سریع‌تر و ارزان‌تر از روش سنتی)</span>
+            </div>
+            
+            <div class="studio-grid">
+                <div>
+                    <div style="font-size: 15px; color: var(--text-muted); margin-bottom: 20px;">عکس موبایلی ساده قطعه و قیمت خرید خود را وارد کنید تا ایجنت کاتالوگ با فرمول `خرید × ۱.۳۸ + رصد رقبا` قیمت را تنظیم کرده و ۴ عکس تبلیغاتی استودیویی بسازد:</div>
+                    
+                    <div class="form-group">
+                        <label>۱. نام قطعه یا لوازم یدکی (مثلاً لنت، تسمه کلاچ، صفحه کلاچ):</label>
+                        <input type="text" class="form-input" id="part-name-input" value="لنت ترمز سرامیکی هوندا ۱۲۵ اورجینال" placeholder="نام قطعه را بنویسید...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>۲. قیمت خرید عمده شما (به تومان):</label>
+                        <input type="number" class="form-input" id="part-cost-input" value="180000" placeholder="مثلاً ۱۸۰۰۰۰">
+                    </div>
+
+                    <div class="form-group">
+                        <label>۳. انتخاب قالب خروجی تصویر با Nano Banana:</label>
+                        <select class="form-select" id="content-style-select">
+                            <option value="packshot">📸 Packshot کاتالوگی – پس‌زمینه سفید استودیویی مخصوص ترب</option>
+                            <option value="workshop">🛠️ Lifestyle Workshop – نمایش قطعه روی میز کار حرفه‌ای تعمیرگاه</option>
+                            <option value="hero">👑 Hero Ad – همراه با لوگوی یدک‌بانو، شعار برند و متن فارسی سلیس</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-generate" onclick="generateCatalogItem()">
+                        ⚡ اجرای پایپ‌لاین ۴۵ ثانیه‌ای تولید محصول و انتشار در سایت
+                    </button>
+                </div>
+
+                <!-- AI Output Display -->
+                <div class="ai-output-box" id="ai-result-panel">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 14px; font-weight: 900; color: #34d399;">● خروجی زنده Gemini 2.5 Flash / Nano Banana:</span>
+                            <span style="font-size: 11px; color: var(--text-muted);" id="ai-timestamp">رندر استودیویی انجام شد</span>
+                        </div>
+                        <div class="output-img-wrap">
+                            <span style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.85); border: 1px solid var(--turquoise); color: var(--turquoise); padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 800; z-index: 10;">📸 رندر با حفظ ۱۰۰٪ محصول</span>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Brembo_brakes_on_a_motorcycle.jpg" id="ai-render-img" class="output-img" alt="رندر قطعه">
+                        </div>
+                        <div class="output-details" id="ai-caption-box">
+                            <strong>📝 سئو خودکار، مشخصات فنی و سازگاری:</strong><br>
+                            عنوان سئو: لنت ترمز سرامیکی هوندا ۱۲۵ اورجینال با ضمانت اصالت دکتر بانو. گیرایی فوق‌العاده بدون صدا و بدون آسیب به دیسک ترمز. سازگار با تمامی مدل‌های هوندا CG، سی‌دی و باکسر. ارسال فوری ۲ ساعته در تهران.<br>
+                            <span style="color: var(--turquoise); font-weight: 700;">#لنت_هوندا۱۲۵ #لوازم_یدکی_موتور #یدک_بانو #قطعات_اورجینال #لنت_ترمز_سرامیکی</span>
+                        </div>
+                    </div>
+
+                    <div class="price-calc-badge">
+                        <span>💰 محاسبه خودکار قیمت مصرف‌کننده (فرمول ۱.۳۸):</span>
+                        <span id="ai-calc-price" style="font-size: 22px; color: #fff;">۲۴۸,۰۰۰ <span>تومان</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3-TIER DYNAMIC PRODUCTS STORE -->
+    <section class="store-section" id="store">
+        <div class="store-header">
+            <div>
+                <h2 style="font-size: 36px; font-weight: 900;">فروشگاه آنلاین قطعات (تست‌شده توسط دکتر بانو)</h2>
+                <p style="color: var(--text-muted); font-size: 16px;">برای مشاهده تخفیف‌های ۱۲٪ تعمیرگاه‌ها و ۲۲٪ عمده‌فروشان، از دکمه‌های بالای صفحه تغییر وضعیت دهید</p>
+            </div>
+            <div style="font-size: 14px; font-weight: 800; color: var(--turquoise);">● موجود در انبار مرکزی تهران با ارسال ۲ ساعته</div>
+        </div>
+
+        <div class="products-grid" id="product-grid-container">
+            <!-- Product 1 -->
+            <div class="product-card" data-model="honda125 boxer" data-cat="brake" data-base="248000">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۱۵٪ تخفیف</span>
+                    <span class="inf-rec-badge">👩‍🔧 تایید دکتر بانو</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Brembo_brakes_on_a_motorcycle.jpg" alt="لنت ترمز هوندا ۱۲۵" class="prod-img">
+                </div>
+                <h3 class="prod-title">لنت ترمز سرامیکی هوندا ۱۲۵ و باکسر (جفت)</h3>
+                <p class="prod-desc">گیرایی فوق‌العاده در سرعت‌های بالا و مسیرهای بارانی، بدون تولید صدا و سایش دیسک ترمز، طول عمر ۳ برابری نسبت به لنت‌های بازار.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۲۹۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۲۴۸,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('لنت ترمز سرامیکی هوندا ۱۲۵', currentPrices[0])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card" data-model="click" data-cat="clutch" data-base="1890000">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">اورجینال ژاپن</span>
+                    <span class="inf-rec-badge">👩‍🔧 نصب فابریک</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Scooter_CVT_transmission_belt.jpg" alt="تسمه کلاچ کلیک" class="prod-img">
+                </div>
+                <h3 class="prod-title">تسمه درایو (تسمه کلاچ) Bando اصلی هندا کلیک</h3>
+                <p class="prod-desc">مقاوم در برابر حرارت بالا و کشش شدید، حذف کامل لرزش موتور در شروع حرکت و شتاب‌گیری بی‌نقص اسکوتر با ضمانت اصالت.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۲,۱۵۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۱,۸۹۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('تسمه درایو Bando هندا کلیک', currentPrices[1])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card" data-model="boxer pulsar" data-cat="clutch" data-base="950000">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">پرفروش تعمیرگاه‌ها</span>
+                    <span class="inf-rec-badge">👩‍🔧 تایید تیونرها</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Motorcycle_chain_and_sprocket.jpg" alt="صفحه کلاچ باکسر" class="prod-img">
+                </div>
+                <h3 class="prod-title">کیت کامل صفحه کلاچ ۶ فنره باجاج باکسر ۱۵۰</h3>
+                <p class="prod-desc">انتقال قدرت ۱۰۰٪ بدون بکسواد کردن در سربالایی‌ها، صفحه‌های فیبر کربنی مقاوم در برابر حرارت بالا با طول عمر ۴۰,۰۰۰ کیلومتر.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۱,۱۰۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۹۵۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('کیت صفحه کلاچ باکسر ۱۵۰', currentPrices[2])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOPPING CART SIDEBAR MODAL -->
+    <div class="cart-overlay" id="cart-modal" onclick="if(event.target===this) closeCart()">
+        <div class="cart-sidebar">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 20px;">
+                    <span style="font-size: 20px; font-weight: 900; color: var(--turquoise);">🛒 سبد خرید شما در یدک‌بانو</span>
+                    <button onclick="closeCart()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">×</button>
+                </div>
+                <div id="cart-items-box" style="max-height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+                    <div style="color: var(--text-muted); text-align: center; padding: 40px 0;">سبد خرید شما در حال حاضر خالی است.</div>
+                </div>
+            </div>
+            <div>
+                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+                        <span>وضعیت قیمت‌گذاری:</span>
+                        <span style="color: var(--turquoise); font-weight: 800;" id="cart-tier-label">👤 مصرف‌کننده (خرده)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+                        <span>ارسال فوری با پیک / تیپاکس:</span>
+                        <span style="color: #34d399; font-weight: 800;">رایگان (هدیه دکتر بانو)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; color: #fff; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px;">
+                        <span>مبلغ نهایی پرداخت:</span>
+                        <span style="color: var(--orange);" id="cart-total-price">۰ <span>تومان</span></span>
+                    </div>
+                </div>
+                <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="checkout()">
+                    🚀 ثبت سفارش و پرداخت درگاه زرین‌پال / محل
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">
+        <span>👩‍🔧</span>
+        <span id="toast-msg">قطعه به سبد خرید اضافه شد!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 24px; color: #fff; font-weight: 900; margin-bottom: 10px;">یدک‌بانو – YadakBanoo AI</p>
+        <p style="margin-bottom: 20px;">اولین فروشگاه ایجنتیک لوازم یدکی موتورسیکلت در ایران | ۱۲ میلیون موتور فعال، مدیریت ۱۰۰٪ خودکار توسط ۷ ایجنت</p>
+        <p style="color: var(--turquoise); font-weight: 800; margin-bottom: 20px;">«قطعه درست، قیمت درست، بانو پشتته.»</p>
+        <p>© ۱۴۰۵ تمامی حقوق مادی و معنوی متعلق به اکوسیستم ایجنتیک «یدک‌بانو» می‌باشد.</p>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // 1. 3-Tier Pricing Dynamic Switcher
+        const basePrices = [248000, 1890000, 950000];
+        let currentPrices = [...basePrices];
+        let currentTier = 'b2c';
+
+        function switchTier(tier) {
+            currentTier = tier;
+            document.querySelectorAll('.tier-btn').forEach(btn => btn.classList.remove('active'));
+            const priceTexts = document.querySelectorAll('.prod-price-text');
+            
+            if (tier === 'b2c') {
+                document.getElementById('tier-b2c').classList.add('active');
+                currentPrices = basePrices.map(p => p);
+                document.getElementById('cart-tier-label').innerText = "👤 مصرف‌کننده (خرده)";
+                showToast("👤 وضعیت تغییر کرد: نمایش قیمت‌های خرده‌فروشی (B2C)");
+            } else if (tier === 'b2b') {
+                document.getElementById('tier-b2b').classList.add('active');
+                currentPrices = basePrices.map(p => Math.round(p * 0.88 / 1000) * 1000); // 12% off
+                document.getElementById('cart-tier-label').innerText = "🔧 تعمیرگاه‌ها (۱۲٪ تخفیف)";
+                showToast("🔧 کلوپ تعمیرکاران دکتر بانو: ۱۲٪ تخفیف + ارسال ۲ ساعته اعمال شد!");
+            } else {
+                document.getElementById('tier-whole').classList.add('active');
+                currentPrices = basePrices.map(p => Math.round(p * 0.78 / 1000) * 1000); // 22% off
+                document.getElementById('cart-tier-label').innerText = "🏢 عمده‌فروشان (۲۲٪ تخفیف)";
+                showToast("🏢 عمده‌فروشی: ۲۲٪ تخفیف + تسویه ۳۰ روزه اعمال شد!");
+            }
+
+            // Animate number updates
+            priceTexts.forEach((el, index) => {
+                el.innerHTML = `${currentPrices[index].toLocaleString('fa-IR')} <span>تومان</span>`;
+            });
+        }
+
+        // 2. AI Photo Diagnosis Simulation (From README)
+        function simulatePhotoDiagnosis() {
+            showToast("📸 در حال اسکن تصویر با هوش مصنوعی و تشخیص قطعه خراب...");
+            setTimeout(() => {
+                document.getElementById('moto-model-select').value = "honda125";
+                document.getElementById('part-cat-select').value = "brake";
+                filterParts();
+                alert("🤖 تشخیص هوش مصنوعی «دکتر بانو» (۰٪ اشتباه):\n\nقطعه آپلود شده: «لنت ترمز هوندا ۱۲۵» تشخیص داده شد.\nمیزان سایش لنت: ۸۵٪ (نیاز فوری به تعویض).\n\nقطعه اورجینال سرامیکی برامبو هم‌اکنون فیلتر و نمایش داده شد!");
+            }, 1200);
+        }
+
+        // 3. Smart Motorcycle Parts Finder
+        function filterParts() {
+            const model = document.getElementById('moto-model-select').value;
+            const cat = document.getElementById('part-cat-select').value;
+            const cards = document.querySelectorAll('.product-card');
+            let foundCount = 0;
+
+            cards.forEach(card => {
+                const cardModels = card.getAttribute('data-model');
+                const cardCat = card.getAttribute('data-cat');
+                
+                const matchModel = (model === 'all' || cardModels.includes(model));
+                const matchCat = (cat === 'all' || cardCat === cat);
+
+                if (matchModel && matchCat) {
+                    card.style.display = 'flex';
+                    foundCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            showToast(`🔍 تعداد ${foundCount} قطعه سازگار با شاسی موتور شما پیدا شد!`);
+        }
+
+        // 4. Catalog AI Uploader (Gemini Nano Banana 45-sec pipeline)
+        function generateCatalogItem() {
+            const name = document.getElementById('part-name-input').value.trim() || "قطعه یدکی موتور";
+            const cost = parseFloat(document.getElementById('part-cost-input').value) || 180000;
+            const style = document.getElementById('content-style-select').value;
+            
+            // Formula from README: cost * 1.38 + market hunter
+            const sellPrice = Math.round(cost * 1.38 / 1000) * 1000;
+            document.getElementById('ai-calc-price').innerHTML = `${sellPrice.toLocaleString('fa-IR')} <span>تومان</span>`;
+            
+            const imgEl = document.getElementById('ai-render-img');
+            const capBox = document.getElementById('ai-caption-box');
+            
+            if (style === 'packshot') {
+                imgEl.src = "https://upload.wikimedia.org/wikipedia/commons/4/4e/Brembo_brakes_on_a_motorcycle.jpg";
+                capBox.innerHTML = `<strong>📝 سئو کاتالوگی Packshot (رندر در ۴۵ ثانیه با Nano Banana):</strong><br>عنوان سئو: ${name} با ضمانت ۷ روزه اصالت دکتر بانو. فرمول قیمت‌گذاری داینامیک: خرید × ۱.۳۸. سازگاری کامل با شاسی‌های استاندارد. انتشار خودکار در ترب و ایمالز.<br><span style="color: var(--turquoise); font-weight: 700;">#${name.replace(/\s+/g, '_')} #یدک_بانو #قطعات_اورجینال #لوازم_یدکی_موتور</span>`;
+            } else if (style === 'workshop') {
+                imgEl.src = "https://upload.wikimedia.org/wikipedia/commons/7/7b/Scooter_CVT_transmission_belt.jpg";
+                capBox.innerHTML = `<strong>🛠️ سئو Lifestyle Workshop (میز کار تعمیرگاه):</strong><br>نمایش واقعی کیفیت ساخت ${name} روی میز کار استادکاران. انتقال قدرت ۱۰۰٪ و بدون لرزش. پیشنهاد ویژه دکتر بانو برای مکانیک‌ها با ۱۲٪ تخفیف کلوپ B2B.<br><span style="color: var(--orange); font-weight: 700;">#کلوپ_تعمیرکاران #دکتر_بانو #تیونینگ_موتور #تسمه_درایو</span>`;
+            } else {
+                imgEl.src = "https://upload.wikimedia.org/wikipedia/commons/8/8f/Akrapovic_exhaust_on_motorcycle.jpg";
+                capBox.innerHTML = `<strong>👑 سئو Hero Ad (تبلیغات بنری با لوگوی یدک‌بانو):</strong><br>«قطعه درست، قیمت درست، بانو پشتته.» عرضه مستقیم ${name} با کمترین قیمت تضمینی در سراسر کشور. پشتیبانی ۲۴/۷ در تلگرام و واتساپ.<br><span style="color: var(--purple); font-weight: 700;">#یدک_بانو #قطعه_درست #بانو_پشتته #فروشگاه_ایجنتیک</span>`;
+            }
+
+            if (typeof confetti !== 'undefined') {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
+            showToast(`⚡ محصول «${name}» با موفقیت در ۴۵ ثانیه ساخته و در ترب پوش شد!`);
+        }
+
+        // 5. Shopping Cart Logic
+        let cart = [];
+        let totalToman = 0;
+
+        function addToCart(title, price) {
+            cart.push({ title, price });
+            totalToman += price;
+            updateCartUI();
+            showToast(`👩‍🔧 «${title}» به سبد خرید اضافه شد!`);
+            if (typeof confetti !== 'undefined' && cart.length === 1) {
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.8 } });
+            }
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length.toLocaleString('fa-IR');
+            const box = document.getElementById('cart-items-box');
+            
+            if (cart.length === 0) {
+                box.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 40px 0;">سبد خرید شما در حال حاضر خالی است.</div>';
+            } else {
+                box.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'cart-item';
+                    el.innerHTML = `
+                        <span style="font-weight: 700; color: #fff;">${index + ۱}. ${item.title}</span>
+                        <span style="color: var(--orange); font-weight: 800;">${item.price.toLocaleString('fa-IR')} تومان</span>
+                    `;
+                    box.appendChild(el);
+                });
+            }
+            document.getElementById('cart-total-price').innerHTML = `${totalToman.toLocaleString('fa-IR')} <span>تومان</span>`;
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+        function checkout() {
+            if (cart.length === 0) {
+                alert("⚠️ سبد خرید شما خالی است! لطفاً ابتدا قطعات مورد نظرتان را انتخاب کنید.");
+                return;
+            }
+            closeCart();
+            if (typeof confetti !== 'undefined') {
+                confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+            }
+            alert(`🎉 سفارش شما به مبلغ نهایی ${totalToman.toLocaleString('fa-IR')} تومان با موفقیت در اکوسیستم «یدک‌بانو» ثبت شد!\n\nایجنت لجستیک (Operations Agent) فاکتور رسمی را صادر کرده و کالا تا ۲ ساعت دیگر با پیک در تهران تحویل می‌گردد.`);
+            cart = []; totalToman = 0; updateCartUI();
+        }
+
+        // 6. Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+    </script>
+</body>
+</html>

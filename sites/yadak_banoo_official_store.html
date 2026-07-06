@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه آنلاین یدک‌بانو (YadakBanoo) | خرید اینترنتی و عمده‌فروشی لوازم یدکی موتورسیکلت</title>
+    <!-- GSAP & Confetti -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg: #060913;
+            --surface: #0c1222;
+            --surface-hover: #131d36;
+            --surface-card: #10182c;
+            --turquoise: #00A99D; /* فیروزه ایرانی اصیل برند */
+            --turquoise-glow: rgba(0, 169, 157, 0.35);
+            --orange: #ff6600;
+            --orange-glow: rgba(255, 102, 0, 0.35);
+            --pink: #ff007f;
+            --green: #10b981;
+            --red: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(0, 169, 157, 0.25);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --font-fa: 'Vazirmatn', Tahoma, IRANSans, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-fa); }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 15%, rgba(0, 169, 157, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 90% 85%, rgba(255, 102, 0, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+            line-height: 1.7;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: linear-gradient(90deg, #090d16, #00332f, #1b0c16, #090d16);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 24px; font-size: 13px; font-weight: 800;
+            color: #fff; position: relative; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .top-badge { display: flex; align-items: center; gap: 8px; color: var(--turquoise); font-weight: 900; }
+        .banner-pulse { width: 8px; height: 8px; background: #34d399; border-radius: 50%; box-shadow: 0 0 10px #34d399; animation: ping 1.5s infinite; }
+        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+
+        /* Main Navbar with E-Commerce Search */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 50px; background: rgba(6, 9, 19, 0.94);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light);
+            position: sticky; top: 0; z-index: 90; gap: 24px; flex-wrap: wrap;
+        }
+        @media (max-width: 900px) { nav { padding: 14px 20px; flex-direction: column; align-items: stretch; } }
+
+        .brand {
+            font-size: 26px; font-weight: 900;
+            background: linear-gradient(to left, #fff, var(--turquoise), var(--orange));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0;
+        }
+        .brand-logo {
+            width: 46px; height: 46px; background: linear-gradient(135deg, var(--turquoise), #007870);
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 900; font-size: 24px; box-shadow: 0 0 25px var(--turquoise-glow);
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex: 1; max-width: 550px; position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 14px 20px 14px 48px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-light); border-radius: 30px; color: #fff; font-size: 14px; font-weight: 700;
+            outline: none; transition: all 0.3s;
+        }
+        .search-input:focus { border-color: var(--turquoise); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px var(--turquoise-glow); }
+        .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
+
+        /* Actions */
+        .nav-actions { display: flex; gap: 14px; align-items: center; flex-shrink: 0; justify-content: flex-end; }
+        
+        .tier-switcher { display: flex; background: rgba(0,0,0,0.6); border: 1px solid var(--border-light); border-radius: 30px; padding: 4px; gap: 4px; }
+        .tier-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 14px; border-radius: 26px; font-size: 12px; font-weight: 800; cursor: pointer; transition: all 0.3s; }
+        .tier-btn.active { background: var(--turquoise); color: #000; box-shadow: 0 0 15px var(--turquoise-glow); }
+
+        .btn-cart {
+            background: linear-gradient(135deg, var(--orange), #ff8800); border: none;
+            color: #000; font-weight: 900; font-size: 14px; padding: 12px 24px;
+            border-radius: 30px; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 8px; box-shadow: 0 0 25px var(--orange-glow);
+        }
+        .btn-cart:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 40px var(--orange); }
+        .cart-badge { background: #000; color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 20px; font-weight: 900; }
+
+        /* STORE HERO BANNER */
+        .store-hero {
+            padding: 50px 50px 60px; max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.3fr 1fr; align-items: center; gap: 40px;
+        }
+        @media (max-width: 992px) { .store-hero { grid-template-columns: 1fr; text-align: center; padding: 30px 20px; } }
+
+        .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 169, 157, 0.15); border: 1px solid var(--turquoise); color: var(--turquoise); padding: 8px 20px; border-radius: 30px; font-size: 13px; font-weight: 800; margin-bottom: 18px; }
+        h1 { font-size: 48px; font-weight: 900; line-height: 1.2; margin-bottom: 16px; }
+        @media (max-width: 768px) { h1 { font-size: 32px; } }
+        h1 span { color: var(--turquoise); text-shadow: 0 0 30px var(--turquoise-glow); }
+        .slogan-box { background: rgba(255, 255, 255, 0.04); border-right: 4px solid var(--orange); padding: 12px 18px; border-radius: 12px; font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 24px; display: inline-block; }
+        p.lead { font-size: 16px; color: var(--text-muted); max-width: 600px; margin-bottom: 30px; }
+        @media (max-width: 992px) { p.lead { margin: 0 auto 30px; } }
+
+        .btn-shop-now {
+            background: linear-gradient(135deg, var(--turquoise), #007870); color: #000; font-weight: 900; font-size: 16px; padding: 16px 36px;
+            border-radius: 30px; border: none; cursor: pointer; text-decoration: none; box-shadow: 0 0 35px var(--turquoise-glow); transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-shop-now:hover { transform: translateY(-3px); box-shadow: 0 0 50px var(--turquoise); }
+
+        /* Dr. Banoo Assistant Card */
+        .banoo-card {
+            background: var(--surface); border: 2px solid var(--turquoise); border-radius: 32px; padding: 24px;
+            backdrop-filter: blur(20px); box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px var(--turquoise-glow);
+            display: flex; gap: 20px; align-items: center; position: relative; overflow: hidden;
+        }
+        @media (max-width: 600px) { .banoo-card { flex-direction: column; text-align: center; } }
+        .banoo-img { width: 140px; height: 160px; object-fit: cover; border-radius: 20px; border: 1px solid var(--border-light); flex-shrink: 0; }
+        .banoo-info h3 { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 6px; }
+        .banoo-info p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+
+        /* SMART MOTORCYCLE MODEL & CATEGORY FILTER BAR */
+        .filter-bar-section { max-width: 1400px; margin: 0 auto 50px; padding: 0 24px; }
+        .filter-bar-box {
+            background: linear-gradient(135deg, #0e1626, #181324); border: 1px solid var(--border);
+            border-radius: 28px; padding: 26px 36px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+        .filter-title { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        
+        .cat-icons-grid { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 20px; }
+        .cat-btn {
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); color: var(--text-muted);
+            padding: 12px 22px; border-radius: 20px; font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 8px; white-space: nowrap; flex-shrink: 0;
+        }
+        .cat-btn:hover, .cat-btn.active { background: var(--turquoise); color: #000; box-shadow: 0 0 20px var(--turquoise-glow); border-color: #fff; }
+
+        .model-select-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; align-items: center; }
+        @media (max-width: 768px) { .model-select-grid { grid-template-columns: 1fr; } }
+        .form-select { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.6); border: 1px solid var(--border-light); border-radius: 16px; color: #fff; font-size: 14px; font-weight: 700; outline: none; cursor: pointer; }
+        .form-select:focus { border-color: var(--turquoise); }
+
+        /* PRODUCTS E-COMMERCE GRID (12+ ITEMS) */
+        .store-main { max-width: 1400px; margin: 0 auto 90px; padding: 0 24px; }
+        .store-header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border-light); padding-bottom: 16px; flex-wrap: wrap; gap: 14px; }
+        .store-header-info h2 { font-size: 28px; font-weight: 900; }
+        .stock-tag { font-size: 13px; font-weight: 800; color: #34d399; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 6px 16px; border-radius: 20px; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        @media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 550px) { .products-grid { grid-template-columns: 1fr; } }
+
+        .product-card {
+            background: var(--surface); border: 1px solid var(--border-light); border-radius: 26px;
+            padding: 20px; transition: all 0.3s; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+        }
+        .product-card:hover { border-color: var(--orange); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px var(--orange-glow); }
+        
+        .prod-img-wrap { width: 100%; height: 210px; border-radius: 18px; overflow: hidden; margin-bottom: 14px; position: relative; background: #05070c; display: flex; align-items: center; justify-content: center; }
+        .prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .product-card:hover .prod-img { transform: scale(1.1); }
+        
+        /* Inline SVG / Canvas Vector Fallback Boxes for Guaranteed Display */
+        .svg-icon-wrap { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(0, 169, 157, 0.15) 0%, #05070c 70%); }
+        
+        .discount-badge { position: absolute; top: 10px; right: 10px; background: var(--pink); color: #fff; font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 14px; z-index: 10; }
+        .compat-badge { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.85); border: 1px solid var(--turquoise); color: var(--turquoise); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 12px; z-index: 10; }
+
+        .prod-cat { font-size: 11px; color: var(--orange); font-weight: 800; margin-bottom: 4px; }
+        .prod-title { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.4; }
+        .prod-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+        
+        .prod-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 14px; }
+        .old-price { font-size: 12px; color: var(--text-muted); text-decoration: line-through; }
+        .new-price { font-size: 19px; font-weight: 900; color: #fff; }
+        .new-price span { font-size: 12px; color: var(--orange); }
+
+        .btn-add {
+            background: rgba(255, 102, 0, 0.15); border: 1px solid var(--orange); color: var(--orange);
+            font-weight: 800; font-size: 13px; padding: 10px 16px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-add:hover { background: var(--orange); color: #000; box-shadow: 0 0 20px var(--orange-glow); }
+
+        /* INVOICE MODAL */
+        #invoice-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .invoice-box { background: #0f172a; border: 2px solid var(--turquoise); border-radius: 28px; max-width: 650px; width: 100%; padding: 36px; box-shadow: 0 0 60px var(--turquoise-glow); position: relative; max-height: 90vh; overflow-y: auto; }
+
+        /* SHOPPING CART SIDEBAR MODAL */
+        .cart-overlay { position: fixed; top: 0; right: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: none; justify-content: flex-start; z-index: 1000; }
+        .cart-sidebar { width: 440px; max-width: 100%; height: 100vh; background: #080d1a; border-left: 2px solid var(--turquoise); padding: 30px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: -20px 0 60px rgba(0,0,0,0.9); }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 14px; }
+
+        /* TOAST NOTIFICATION */
+        #toast { position: fixed; bottom: 30px; left: 30px; background: rgba(0, 169, 157, 0.95); color: #000; padding: 16px 26px; border-radius: 20px; font-weight: 900; font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; gap: 10px; border: 1px solid #fff; }
+
+        /* Footer */
+        footer { padding: 60px 40px; background: #03050c; border-top: 1px solid var(--border-light); text-align: center; color: var(--text-muted); font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Notification Bar -->
+    <div class="top-bar">
+        <div class="top-badge">
+            <span class="banner-pulse"></span>
+            <span>🏍️ فروشگاه رسمی و آنلاین قطعات موتورسیکلت «یدک‌بانو» | متصل به ۱۲ میلیون موتور فعال در ایران</span>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <span>🚚 ارسال رایگان برای سفارش‌های بالای ۲ میلیون تومان</span>
+            <span style="color: var(--orange);">● ۷ روز ضمانت بازگشت وجه</span>
+        </div>
+    </div>
+
+    <!-- Main Navbar with Search Bar -->
+    <nav>
+        <a href="#" class="brand">
+            <div class="brand-logo">👩‍🔧</div>
+            <span>فروشگاه یدک‌بانو</span>
+        </a>
+
+        <!-- Central Search Bar -->
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="search-input" placeholder="جستجو در نام قطعه، مدل موتور (کلیک، بنلی...) یا شماره فنی..." oninput="searchProducts(this.value)">
+        </div>
+
+        <div class="nav-actions">
+            <!-- 3-Tier Price Switcher -->
+            <div class="tier-switcher">
+                <button class="tier-btn active" id="tier-b2c" onclick="switchTier('b2c')">👤 خرده</button>
+                <button class="tier-btn" id="tier-b2b" onclick="switchTier('b2b')">🔧 تعمیرگاه (۱۲٪ تخفیف)</button>
+                <button class="tier-btn" id="tier-whole" onclick="switchTier('wholesale')">🏢 عمده (۲۲٪ تخفیف)</button>
+            </div>
+
+            <button class="btn-cart" onclick="openCart()">
+                <span>🛒 سبد خرید</span>
+                <span class="cart-badge" id="cart-count">۰</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- STORE HERO BANNER -->
+    <section class="store-hero">
+        <div>
+            <div class="hero-tag">⚡ بزرگ‌ترین مرکز عمده‌فروشی و تک‌فروشی آنلاین لوازم یدکی موتور</div>
+            <h1>خرید مستقیم و بدون واسطه <br><span>لوازم یدکی موتورسیکلت</span></h1>
+            <div class="slogan-box">«قطعه درست، قیمت درست، بانو پشتته.»</div>
+            <p class="lead">عرضه تخصصی و بدون واسطه قطعات اورجینال موتوری، سیستم ترمز سرامیکی، اگزوزهای تیونینگ و تسمه تایم برای انواع هندا کلیک، بنلی، یاماها، پالس و وسپا با ضمانت اصالت و قیمت رقابتی.</p>
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+                <a href="#store-catalog" class="btn-shop-now">🛍️ ورود به ویترین محصولات ←</a>
+                <button onclick="generateInvoice()" style="background: rgba(255, 102, 0, 0.15); border: 1px solid var(--orange); color: var(--orange); padding: 16px 28px; border-radius: 30px; font-weight: 800; font-size: 15px; cursor: pointer; transition: all 0.3s;">📑 صدور آنی پیش‌فاکتور رسمی B2B</button>
+            </div>
+        </div>
+
+        <div class="banoo-card">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="دکتر بانو" class="banoo-img">
+            <div class="banoo-info">
+                <span style="font-size: 11px; background: var(--turquoise); color: #000; font-weight: 900; padding: 3px 10px; border-radius: 12px;">👩‍🔧 دستیار هوشمند خرید</span>
+                <h3 style="margin-top: 8px;">دکتر بانو – مکانیک آنلاین شما</h3>
+                <p>برای تشخیص دقیق قطعه سازگار با شاسی موتور خود یا عیب‌جویی آنلاین، می‌توانید از دستیار ۲۴ ساعته یدک‌بانو کمک بگیرید.</p>
+                <a href="#store-catalog" style="color: var(--orange); font-weight: 800; font-size: 13px; text-decoration: none;">مشاهده قطعات پیشنهادی دکتر بانو ↓</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMART CATEGORY & MODEL FILTER BAR -->
+    <section class="filter-bar-section" id="store-catalog">
+        <div class="filter-bar-box">
+            <div class="filter-title"><span>🔍</span> فیلتر سریع بر اساس دسته‌بندی و مدل موتورسیکلت</div>
+            
+            <div class="cat-icons-grid">
+                <button class="cat-btn active" onclick="filterCategory('all', this)">🏍️ تمام قطعات فروشگاه</button>
+                <button class="cat-btn" onclick="filterCategory('brake', this)">🛑 لنت و سیستم ترمز</button>
+                <button class="cat-btn" onclick="filterCategory('clutch', this)">⚙️ تسمه و صفحه کلاچ (CVT)</button>
+                <button class="cat-btn" onclick="filterCategory('tuning', this)">🔥 اگزوز و تیونینگ</button>
+                <button class="cat-btn" onclick="filterCategory('light', this)">💡 چراغ و سیستم برق</button>
+                <button class="cat-btn" onclick="filterCategory('engine', this)">🔩 قطعات موتوری و شمع</button>
+            </div>
+
+            <div class="model-select-grid">
+                <div>
+                    <select class="form-select" id="model-filter" onchange="applyFilters()">
+                        <option value="all">⚡ فیلتر بر اساس مدل موتور (نمایش تمام موتورها)</option>
+                        <option value="click">هندا کلیک ۱۲۵ / ۱۵۰ و واریو (Honda Click / Vario)</option>
+                        <option value="benelli">بنلی ۳۰۰ / ۲۵۰ تک و جفت سیلندر (Benelli TNT / VLR)</option>
+                        <option value="yamaha">یاماها ان‌مکس و ایکس‌مکس (Yamaha NMAX / XMAX)</option>
+                        <option value="honda125">هوندا ۱۲۵ / سی‌جی و باکسر (Honda CG / Boxer)</option>
+                        <option value="pulsar">پالس ان‌اس ۲۰۰ / آر‌اس (Bajaj Pulsar NS200)</option>
+                    </select>
+                </div>
+                <div style="font-size: 13px; color: var(--text-muted); text-align: left;">تعداد قطعات نمایش‌داده‌شده: <strong style="color: var(--turquoise); font-size: 16px;" id="visible-count">۸</strong> محصول</div>
+                <div>
+                    <button onclick="resetFilters()" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-light); color: #fff; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer;">↻ نمایش تمام محصولات</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS E-COMMERCE GRID (12+ ITEMS) -->
+    <section class="store-main">
+        <div class="store-header-info">
+            <div>
+                <h2>ویترین محصولات و قطعات اورجینال</h2>
+                <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">برای مشاهده تخفیف همکاری کلوپ تعمیرکاران، دکمه «تعمیرگاه ۱۲٪ تخفیف» را در بالای صفحه فعال کنید</p>
+            </div>
+            <span class="stock-tag">✔ موجود در انبار مرکزی تهران - تحویل ۲ ساعته</span>
+        </div>
+
+        <div class="products-grid" id="products-container">
+            <!-- Product 1: Exhaust -->
+            <div class="product-card" data-cat="tuning" data-model="click benelli yamaha" data-base="8200000" data-title="اگزوز کربنی Akrapovic اسلیپ‌آن">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۱۵٪ تخفیف</span>
+                    <span class="compat-badge">هندا کلیک / بنلی / یاماها</span>
+                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80" alt="اگزوز آکراپوویچ" class="prod-img">
+                </div>
+                <div class="prod-cat">اگزوز و تیونینگ قهرمانی</div>
+                <h3 class="prod-title">اگزوز کربنی Akrapovic اسلیپ‌آن با سایلنسر</h3>
+                <p class="prod-desc">افزایش ۳.۵ اسب بخار قدرت انجین، کاهش وزن ۴۰ درصدی نسبت به فابریک همراه با صدای مسابقه‌ای.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۹,۵۰۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۸,۲۰۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('اگزوز کربنی Akrapovic', currentPrices[0])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 2: Brembo Disc Brake SVG Illustration (Never Fails) -->
+            <div class="product-card" data-cat="brake" data-model="click yamaha benelli honda125 pulsar" data-base="1280000" data-title="لنت ترمز سرامیکی Brembo">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۱۰٪ تخفیف</span>
+                    <span class="compat-badge">تمام اسکوترها و موتورها</span>
+                    <div class="svg-icon-wrap">
+                        <svg viewBox="0 0 200 200" width="150" height="150">
+                            <!-- Disc -->
+                            <circle cx="100" cy="100" r="70" fill="none" stroke="#e2e8f0" stroke-width="18" stroke-dasharray="12 6"/>
+                            <circle cx="100" cy="100" r="45" fill="none" stroke="#64748b" stroke-width="6"/>
+                            <!-- Caliper -->
+                            <path d="M 120 40 Q 150 50 160 90 L 140 95 Q 130 65 110 55 Z" fill="#ef4444"/>
+                            <text x="135" y="75" fill="#fff" font-size="10" font-weight="bold" transform="rotate(25 135 75)">BREMBO</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="prod-cat">سیستم ترمز و لنت</div>
+                <h3 class="prod-title">لنت ترمز سرامیکی Brembo اصلی ایتالیا (جفت)</h3>
+                <p class="prod-desc">گیرایی فوق‌العاده در سرعت بالا و باران، بدون تولید صدا و سایش دیسک ترمز، طول عمر ۳ برابری.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۱,۴۵۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۱,۲۸۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('لنت ترمز سرامیکی Brembo', currentPrices[1])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 3: Bando CVT Belt SVG Illustration (Never Fails) -->
+            <div class="product-card" data-cat="clutch" data-model="click yamaha" data-base="1890000" data-title="تسمه درایو Bando ژاپن">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">اورجینال ژاپن</span>
+                    <span class="compat-badge">هندا کلیک / یاماها NMAX</span>
+                    <div class="svg-icon-wrap">
+                        <svg viewBox="0 0 200 200" width="160" height="160">
+                            <!-- CVT Pulleys -->
+                            <circle cx="60" cy="100" r="32" fill="#334155" stroke="#94a3b8" stroke-width="4"/>
+                            <circle cx="140" cy="100" r="24" fill="#334155" stroke="#94a3b8" stroke-width="4"/>
+                            <!-- Belt -->
+                            <path d="M 60 68 L 140 76 A 24 24 0 0 1 140 124 L 60 132 A 32 32 0 0 1 60 68 Z" fill="none" stroke="#10b981" stroke-width="10" stroke-dasharray="6 3"/>
+                            <text x="85" y="103" fill="#fff" font-size="12" font-weight="bold">BANDO</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="prod-cat">سیستم انتقال قدرت (CVT)</div>
+                <h3 class="prod-title">تسمه درایو (تسمه کلاچ) Bando اصلی ژاپن</h3>
+                <p class="prod-desc">مقاوم در برابر حرارت و کشش شدید، حذف کامل لرزش موتور در شروع حرکت و شتاب‌گیری بی‌نقص اسکوتر.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۲,۱۵۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۱,۸۹۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('تسمه درایو Bando ژاپن', currentPrices[2])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 4: Clutch Kit SVG Illustration (Never Fails) -->
+            <div class="product-card" data-cat="clutch" data-model="honda125 pulsar" data-base="950000" data-title="کیت صفحه کلاچ ۶ فنره باکسر">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">پرفروش تعمیرگاه‌ها</span>
+                    <span class="compat-badge">باکسر ۱۵۰ / پالس NS</span>
+                    <div class="svg-icon-wrap">
+                        <svg viewBox="0 0 200 200" width="150" height="150">
+                            <!-- Clutch Gear Teeth -->
+                            <circle cx="100" cy="100" r="65" fill="#1e293b" stroke="#f59e0b" stroke-width="8" stroke-dasharray="14 10"/>
+                            <circle cx="100" cy="100" r="45" fill="#0f172a" stroke="#cbd5e1" stroke-width="4"/>
+                            <!-- Springs -->
+                            <circle cx="100" cy="65" r="8" fill="#ef4444"/>
+                            <circle cx="100" cy="135" r="8" fill="#ef4444"/>
+                            <circle cx="65" cy="100" r="8" fill="#ef4444"/>
+                            <circle cx="135" cy="100" r="8" fill="#ef4444"/>
+                            <text x="82" y="104" fill="#f59e0b" font-size="11" font-weight="bold">CLUTCH</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="prod-cat">سیستم کلاچ و گیربکس</div>
+                <h3 class="prod-title">کیت کامل صفحه کلاچ ۶ فنره باجاج باکسر ۱۵۰</h3>
+                <p class="prod-desc">انتقال قدرت ۱۰۰٪ بدون بکسواد کردن در سربالایی‌ها، صفحه‌های فیبر کربنی مقاوم با طول عمر ۴۰,۰۰۰ کیلومتر.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۱,۱۰۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۹۵۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('کیت صفحه کلاچ باکسر ۱۵۰', currentPrices[3])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 5: LED Headlight -->
+            <div class="product-card" data-cat="light" data-model="click benelli yamaha honda125 pulsar" data-base="950000" data-title="هدلایت LED نسل ۸ حرفه‌ای">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۲۰٪ تخفیف</span>
+                    <span class="compat-badge">نصب فابریک تمام موتورها</span>
+                    <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=800&q=80" alt="هدلایت LED" class="prod-img">
+                </div>
+                <div class="prod-cat">سیستم برق و روشنایی</div>
+                <h3 class="prod-title">هدلایت LED نسل ۸ حرفه‌ای ۶۰۰۰ لومن (سفید یخی)</h3>
+                <p class="prod-desc">پرتاب نور فوق‌العاده تا ۱۵۰ متر در شب، مصرف برق بسیار پایین بدون آسیب به بوبین و باتری همراه با فن خنک‌کننده.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۱,۲۰۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۹۵۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('هدلایت LED نسل ۸', currentPrices[4])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 6: NGK Iridium Spark Plug SVG Illustration (Never Fails) -->
+            <div class="product-card" data-cat="engine" data-model="click benelli yamaha honda125 pulsar" data-base="620000" data-title="شمع ایریدیم NGK لیزری">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">تضمین اصالت</span>
+                    <span class="compat-badge">انواع اسکوتر و دنده‌ای</span>
+                    <div class="svg-icon-wrap">
+                        <svg viewBox="0 0 200 200" width="150" height="150">
+                            <!-- Insulator White Body -->
+                            <rect x="85" y="30" width="30" height="60" fill="#f8fafc" rx="4"/>
+                            <line x1="85" y1="45" x2="115" y2="45" stroke="#3b82f6" stroke-width="4"/>
+                            <line x1="85" y1="55" x2="115" y2="55" stroke="#3b82f6" stroke-width="4"/>
+                            <!-- Hex Nut -->
+                            <polygon points="80,90 120,90 125,110 75,110" fill="#94a3b8"/>
+                            <!-- Threads -->
+                            <rect x="85" y="110" width="30" height="40" fill="#64748b"/>
+                            <line x1="85" y1="120" x2="115" y2="120" stroke="#334155" stroke-width="3"/>
+                            <line x1="85" y1="130" x2="115" y2="130" stroke="#334155" stroke-width="3"/>
+                            <line x1="85" y1="140" x2="115" y2="140" stroke="#334155" stroke-width="3"/>
+                            <!-- Tip & Spark -->
+                            <rect x="97" y="150" width="6" height="15" fill="#cbd5e1"/>
+                            <path d="M 90 165 L 100 165 L 100 155" fill="none" stroke="#94a3b8" stroke-width="4"/>
+                            <circle cx="100" cy="155" r="4" fill="#00f0ff"/>
+                            <text x="88" y="75" fill="#1e293b" font-size="12" font-weight="bold">NGK</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="prod-cat">سیستم احتراق و برق انجین</div>
+                <h3 class="prod-title">شمع سوزنی ایریدیم NGK لیزری اصل ژاپن</h3>
+                <p class="prod-desc">احتراق ۱۰۰٪ کامل سوخت، افزایش چشمگیر شتاب موتور و کاهش مصرف بنزین، روشن شدن فوری در سرما.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۷۵۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۶۲۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('شمع ایریدیم NGK ژاپن', currentPrices[5])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 7: Öhlins Racing Suspension -->
+            <div class="product-card" data-cat="tuning" data-model="benelli pulsar yamaha" data-base="1640000" data-title="کمک‌فنر گازی Öhlins ریسینگ">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">ویژه ریسینگ</span>
+                    <span class="compat-badge">بنلی ۳۰۰ / پالس NS</span>
+                    <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80" alt="کمک فنر اولینز" class="prod-img">
+                </div>
+                <div class="prod-cat">سیستم تعلیق و هندلینگ</div>
+                <h3 class="prod-title">کمک‌فنر گازی قابل تنظیم Öhlins ریسینگ طلایی</h3>
+                <p class="prod-desc">هندلینگ فوق‌العاده در پیچ‌های تند، قابلیت تنظیم میزان نرمی و سختی (Rebound) متناسب با وزن و جاده‌های ایران.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۱۸,۵۰۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۱۶,۴۰۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('کمک‌فنر گازی Öhlins', currentPrices[6])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+
+            <!-- Product 8: Honda 125 Brake Pads SVG Illustration -->
+            <div class="product-card" data-cat="brake" data-model="honda125 boxer" data-base="248000" data-title="لنت ترمز سرامیکی هوندا ۱۲۵">
+                <div class="prod-img-wrap">
+                    <span class="discount-badge">-۱۵٪ تخفیف</span>
+                    <span class="compat-badge">هوندا CG 125 / باکسر</span>
+                    <div class="svg-icon-wrap">
+                        <svg viewBox="0 0 200 200" width="150" height="150">
+                            <!-- Pad 1 -->
+                            <path d="M 40 70 A 50 50 0 0 1 100 40 L 110 65 A 30 30 0 0 0 65 85 Z" fill="#b91c1c" stroke="#f8fafc" stroke-width="2"/>
+                            <!-- Pad 2 -->
+                            <path d="M 100 160 A 50 50 0 0 1 40 130 L 65 115 A 30 30 0 0 0 90 135 Z" fill="#b91c1c" stroke="#f8fafc" stroke-width="2"/>
+                            <circle cx="75" cy="65" r="6" fill="#f59e0b"/>
+                            <circle cx="75" cy="135" r="6" fill="#f59e0b"/>
+                            <text x="85" y="105" fill="#fff" font-size="12" font-weight="bold">HONDA 125</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="prod-cat">سیستم ترمز و لنت</div>
+                <h3 class="prod-title">لنت ترمز سرامیکی هوندا ۱۲۵ و باکسر (جفت)</h3>
+                <p class="prod-desc">گیرایی فوق‌العاده در سرعت بالا و باران، بدون تولید صدا و سایش دیسک ترمز، طول عمر ۳ برابری نسبت به لنت‌های بازار.</p>
+                <div class="prod-footer">
+                    <div>
+                        <div class="old-price">۲۹۰,۰۰۰ تومان</div>
+                        <div class="new-price prod-price-text">۲۴۸,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('لنت ترمز سرامیکی هوندا ۱۲۵', currentPrices[7])">🛒 افزودن به سبد</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INVOICE MODAL -->
+    <div id="invoice-modal">
+        <div class="invoice-box">
+            <button onclick="closeInvoice()" style="position: absolute; top: 20px; left: 20px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer;">×</button>
+            <div style="text-align: center; border-bottom: 2px solid var(--turquoise); padding-bottom: 20px; margin-bottom: 24px;">
+                <div style="font-size: 24px; font-weight: 900; color: var(--turquoise);">📑 پیش‌فاکتور رسمی الکترونیکی «یدک‌بانو»</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">صادر شده توسط ایجنت لجستیک (Operations Agent) برای کلوپ تعمیرگاه‌های B2B</div>
+            </div>
+            
+            <div style="font-size: 14px; line-height: 2; color: #fff; margin-bottom: 24px;">
+                <strong>نام خریدار:</strong> تعمیرگاه تخصصی موتورسیکلت (کد عضویت B2B-1405)<br>
+                <strong>تاریخ صدور:</strong> امروز، ۱۱ تیر ۱۴۰۵ | <strong>اعتبار پیش‌فاکتور:</strong> ۴۸ ساعت<br>
+                <strong>شرایط پرداخت:</strong> تسویه نقدی با کسر ۱۲٪ تخفیف همکاری + ارسال رایگان ۲ ساعته در تهران
+            </div>
+
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); border-radius: 16px; padding: 18px; margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; color: var(--orange); margin-bottom: 10px;">
+                    <span>شرح خدمات و اقلام فاکتور:</span>
+                    <span>مبلغ کل (تومان)</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+                    <span>۱. کیت کامل صفحه کلاچ باکسر ۱۵۰ (عمده ۱۰ عدد)</span>
+                    <span>۸,۳۶۰,۰۰۰ تومان</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+                    <span>۲. لنت ترمز سرامیکی هوندا ۱۲۵ (کارتن ۲۴ جفتی)</span>
+                    <span>۵,۲۳۲,۰۰۰ تومان</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; color: #fff; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 12px;">
+                    <span>مبلغ قابل تسویه (با کسر تخفیف B2B):</span>
+                    <span style="color: var(--turquoise);">۱۳,۵۹۲,۰۰۰ تومان</span>
+                </div>
+            </div>
+
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="alert('📑 فایل PDF فاکتور رسمی با مهر دیجیتال «یدک‌بانو» صادر و به واتساپ شما ارسال شد.')">
+                🖨️ دانلود و چاپ فاکتور رسمی PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- SHOPPING CART SIDEBAR MODAL -->
+    <div class="cart-overlay" id="cart-modal" onclick="if(event.target===this) closeCart()">
+        <div class="cart-sidebar">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 20px;">
+                    <span style="font-size: 20px; font-weight: 900; color: var(--turquoise);">🛒 سبد خرید شما در یدک‌بانو</span>
+                    <button onclick="closeCart()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">×</button>
+                </div>
+                <div id="cart-items-box" style="max-height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+                    <div style="color: var(--text-muted); text-align: center; padding: 40px 0;">سبد خرید شما در حال حاضر خالی است.</div>
+                </div>
+            </div>
+            <div>
+                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+                        <span>هزینه ارسال با پیک / تیپاکس:</span>
+                        <span style="color: #34d399; font-weight: 800;">رایگان (هدیه دکتر بانو)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; color: #fff; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px;">
+                        <span>مبلغ نهایی پرداخت:</span>
+                        <span style="color: var(--orange);" id="cart-total-price">۰ <span>تومان</span></span>
+                    </div>
+                </div>
+                <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="checkout()">
+                    🚀 ثبت نهایی سفارش و پرداخت امن شتاب / محل
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">
+        <span>👩‍🔧</span>
+        <span id="toast-msg">قطعه به سبد خرید اضافه شد!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 24px; color: #fff; font-weight: 900; margin-bottom: 10px;">یدک‌بانو – YadakBanoo AI</p>
+        <p style="margin-bottom: 18px;">فروشگاه آنلاین و تخصصی لوازم یدکی موتورسیکلت در ایران | ۱۲ میلیون موتور فعال، مدیریت ۱۰۰٪ خودکار</p>
+        <p style="color: var(--turquoise); font-weight: 800; margin-bottom: 20px;">«قطعه درست، قیمت درست، بانو پشتته.»</p>
+        <p>© ۱۴۰۵ تمامی حقوق مادی و معنوی متعلق به امپراتوری «یدک‌بانو» می‌باشد.</p>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // 1. 3-Tier Pricing Dynamic Switcher
+        const basePrices = [8200000, 1280000, 1890000, 950000, 950000, 620000, 1640000, 248000];
+        let currentPrices = [...basePrices];
+
+        function switchTier(tier) {
+            document.querySelectorAll('.tier-btn').forEach(btn => btn.classList.remove('active'));
+            const priceTexts = document.querySelectorAll('.prod-price-text');
+            let mult = 1.0;
+            if (tier === 'b2c') {
+                document.getElementById('tier-b2c').classList.add('active');
+                currentPrices = basePrices.map(p => p);
+                showToast("👤 نمایش قیمت‌های خرده‌فروشی (B2C)");
+            } else if (tier === 'b2b') {
+                document.getElementById('tier-b2b').classList.add('active');
+                mult = 0.88; // 12% off
+                currentPrices = basePrices.map(p => Math.round(p * mult / 1000) * 1000);
+                showToast("🔧 کلوپ تعمیرکاران دکتر بانو: ۱۲٪ تخفیف + ارسال ۲ ساعته!");
+            } else {
+                document.getElementById('tier-whole').classList.add('active');
+                mult = 0.78; // 22% off
+                currentPrices = basePrices.map(p => Math.round(p * mult / 1000) * 1000);
+                showToast("🏢 عمده‌فروشی: ۲۲٪ تخفیف ویژه + تسویه ۳۰ روزه!");
+            }
+            priceTexts.forEach((el, idx) => {
+                el.innerHTML = `${currentPrices[idx].toLocaleString('fa-IR')} <span>تومان</span>`;
+            });
+        }
+
+        // 2. Search & Category Filter
+        let selectedCat = 'all';
+        let selectedModel = 'all';
+
+        function searchProducts(query) {
+            const q = query.trim().toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            let count = 0;
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                const model = card.getAttribute('data-model').toLowerCase();
+                const cat = card.getAttribute('data-cat').toLowerCase();
+                
+                const matchQ = (q === '' || title.includes(q) || model.includes(q));
+                const matchCat = (selectedCat === 'all' || cat === selectedCat);
+                const matchModel = (selectedModel === 'all' || model.includes(selectedModel));
+
+                if (matchQ && matchCat && matchModel) {
+                    card.style.display = 'flex';
+                    count++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            document.getElementById('visible-count').innerText = count;
+        }
+
+        function filterCategory(cat, btn) {
+            selectedCat = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            applyFilters();
+        }
+
+        function applyFilters() {
+            selectedModel = document.getElementById('model-filter').value;
+            searchProducts(document.getElementById('search-input').value);
+        }
+
+        function resetFilters() {
+            selectedCat = 'all'; selectedModel = 'all';
+            document.getElementById('search-input').value = "";
+            document.getElementById('model-filter').value = "all";
+            document.querySelectorAll('.cat-btn').forEach((b, idx) => {
+                if(idx === 0) b.classList.add('active'); else b.classList.remove('active');
+            });
+            applyFilters();
+            showToast("↻ نمایش تمام محصولات انبار");
+        }
+
+        // 3. Invoice Modal
+        function generateInvoice() { document.getElementById('invoice-modal').style.display = 'flex'; }
+        function closeInvoice() { document.getElementById('invoice-modal').style.display = 'none'; }
+
+        // 4. Shopping Cart Logic
+        let cart = [];
+        let totalToman = 0;
+
+        function addToCart(title, price) {
+            cart.push({ title, price });
+            totalToman += price;
+            updateCartUI();
+            showToast(`👩‍🔧 «${title}» به سبد خرید اضافه شد!`);
+            if (typeof confetti !== 'undefined' && cart.length === 1) {
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.8 } });
+            }
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length.toLocaleString('fa-IR');
+            const box = document.getElementById('cart-items-box');
+            
+            if (cart.length === 0) {
+                box.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 40px 0;">سبد خرید شما در حال حاضر خالی است.</div>';
+            } else {
+                box.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'cart-item';
+                    el.innerHTML = `
+                        <span style="font-weight: 700; color: #fff;">${index + ۱}. ${item.title}</span>
+                        <span style="color: var(--orange); font-weight: 800;">${item.price.toLocaleString('fa-IR')} تومان</span>
+                    `;
+                    box.appendChild(el);
+                });
+            }
+            document.getElementById('cart-total-price').innerHTML = `${totalToman.toLocaleString('fa-IR')} <span>تومان</span>`;
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+        function checkout() {
+            if (cart.length === 0) {
+                alert("⚠️ سبد خرید شما خالی است! لطفاً ابتدا قطعات مورد نظرتان را انتخاب کنید.");
+                return;
+            }
+            closeCart();
+            if (typeof confetti !== 'undefined') {
+                confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+            }
+            alert(`🎉 سفارش شما به مبلغ نهایی ${totalToman.toLocaleString('fa-IR')} تومان با موفقیت ثبت شد!\n\nکارشناسان یدک‌بانو جهت هماهنگی ارسال فوری ۲ ساعته در تهران با شما تماس خواهند گرفت.`);
+            cart = []; totalToman = 0; updateCartUI();
+        }
+
+        // 5. Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+    </script>
+</body>
+</html>

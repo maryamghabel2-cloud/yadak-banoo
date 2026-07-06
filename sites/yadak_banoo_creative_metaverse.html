@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گاراژ مجازی و میز کار هوش مصنوعی «یدک‌بانو» | Dr. Banoo Cyber Garage & Tuning Rig</title>
+    <!-- GSAP & Confetti -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg-garage: #0b0d13;
+            --workbench: #121622;
+            --metal: #1c2235;
+            --turquoise: #00A99D; /* فیروزه ایرانی برند */
+            --turquoise-glow: rgba(0, 169, 157, 0.4);
+            --amber: #F59E0B; /* هشدار صنعتی */
+            --amber-glow: rgba(245, 158, 11, 0.35);
+            --racing-red: #EF4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(0, 169, 157, 0.3);
+            --border-metal: rgba(255, 255, 255, 0.1);
+            --font-fa: 'Vazirmatn', Tahoma, IRANSans, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-fa); }
+        
+        body {
+            background-color: var(--bg-garage);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 169, 157, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 169, 157, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            line-height: 1.8;
+        }
+
+        /* Industrial Garage Banner */
+        .garage-header {
+            background: linear-gradient(90deg, #05070c, #002b28, #1b0d14, #05070c);
+            border-bottom: 2px solid var(--turquoise);
+            padding: 12px 24px; text-align: center; font-size: 13px; font-weight: 800;
+            color: #fff; position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.8);
+        }
+        .banner-left { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--turquoise); }
+        .banner-pulse { width: 10px; height: 10px; background: #34d399; border-radius: 50%; box-shadow: 0 0 12px #34d399; animation: ping 1.5s infinite; }
+        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.8); opacity: 0; } }
+
+        .tier-pill-box { display: flex; background: rgba(0,0,0,0.7); border: 1px solid var(--border-metal); border-radius: 20px; padding: 3px; gap: 4px; }
+        .tier-pill { background: transparent; border: none; color: var(--text-muted); padding: 6px 14px; border-radius: 16px; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.3s; }
+        .tier-pill.active { background: var(--turquoise); color: #000; box-shadow: 0 0 15px var(--turquoise-glow); }
+
+        /* THE WORKBENCH HERO - RADICALLY DIFFERENT INDUSTRIAL DESIGN */
+        .workbench-section {
+            padding: 50px 40px 80px; max-width: 1400px; margin: 0 auto;
+        }
+        @media (max-width: 768px) { .workbench-section { padding: 30px 16px; } }
+
+        .garage-title-box { text-align: center; margin-bottom: 40px; }
+        .garage-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 169, 157, 0.15); border: 1px solid var(--turquoise); color: var(--turquoise); padding: 8px 22px; border-radius: 30px; font-size: 13px; font-weight: 800; margin-bottom: 16px; }
+        h1 { font-size: 46px; font-weight: 900; line-height: 1.25; color: #fff; margin-bottom: 12px; }
+        @media (max-width: 768px) { h1 { font-size: 30px; } }
+        h1 span { color: var(--turquoise); text-shadow: 0 0 25px var(--turquoise-glow); }
+        .garage-sub { color: var(--text-muted); font-size: 16px; max-width: 700px; margin: 0 auto; }
+
+        /* THE DIAGNOSTIC OSCILLOSCOPE & AUDIO ENGINE (NEW CREATIVE FEATURE) */
+        .diag-deck {
+            background: var(--workbench); border: 2px solid var(--turquoise);
+            border-radius: 32px; padding: 36px; box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 50px var(--turquoise-glow);
+            display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; margin-bottom: 70px;
+        }
+        @media (max-width: 992px) { .diag-deck { grid-template-columns: 1fr; } }
+
+        .deck-left h2 { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .deck-left p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.8; }
+
+        .sound-btn-grid { display: flex; flex-direction: column; gap: 12px; }
+        .sound-btn {
+            background: var(--metal); border: 1px solid var(--border-metal); border-radius: 16px;
+            padding: 16px 20px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: space-between;
+            color: #fff; font-weight: 800; font-size: 14px; text-align: right;
+        }
+        .sound-btn:hover, .sound-btn.active { border-color: var(--turquoise); background: rgba(0, 169, 157, 0.15); box-shadow: 0 0 20px var(--turquoise-glow); transform: translateX(-6px); }
+        .sound-icon { font-size: 24px; }
+
+        /* Oscilloscope Monitor */
+        .monitor-box {
+            background: #05070c; border: 2px solid var(--border-metal); border-radius: 24px;
+            padding: 24px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+            min-height: 380px; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .monitor-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; color: #34d399; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 12px; }
+        
+        #osc-canvas { width: 100%; height: 140px; background: #020408; border-radius: 12px; border: 1px solid rgba(0, 240, 255, 0.2); }
+        
+        .ai-voice-prescription {
+            background: rgba(0, 169, 157, 0.1); border: 1px solid var(--turquoise); border-radius: 16px;
+            padding: 16px; margin-top: 14px; font-size: 13px; line-height: 1.8; color: #fff;
+        }
+        .ai-voice-prescription strong { color: var(--turquoise); display: block; margin-bottom: 4px; }
+
+        /* INTERACTIVE MOTORCYCLE TUNING RIG & RADAR CHART (NEW CREATIVE FEATURE) */
+        .tuning-rig {
+            background: var(--workbench); border: 2px solid var(--amber);
+            border-radius: 32px; padding: 40px; box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 40px var(--amber-glow);
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: center; margin-bottom: 70px;
+        }
+        @media (max-width: 992px) { .tuning-rig { grid-template-columns: 1fr; } }
+
+        .rig-left h2 { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .rig-left p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+        .upgrade-list { display: flex; flex-direction: column; gap: 12px; }
+        .upgrade-item {
+            background: var(--metal); border: 1px solid var(--border-metal); border-radius: 16px;
+            padding: 16px 20px; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 800; font-size: 14px;
+        }
+        .upgrade-item:hover { border-color: var(--amber); background: rgba(245, 158, 11, 0.1); }
+        .upgrade-item.active { border-color: var(--amber); background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 20px var(--amber-glow); }
+        .up-price { color: var(--amber); }
+
+        .radar-box {
+            background: #05070c; border: 1px solid var(--border-metal); border-radius: 24px;
+            padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 380px;
+        }
+        #radar-canvas { width: 280px; height: 280px; max-width: 100%; }
+
+        /* THE 45-SECOND NANO BANANA STUDIO WITH LIVE WIPE SLIDER */
+        .studio-deck {
+            background: linear-gradient(135deg, #0e1626, #002e2b); border: 2px solid var(--turquoise);
+            border-radius: 32px; padding: 40px; box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 50px var(--turquoise-glow); margin-bottom: 70px;
+        }
+        .studio-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 28px; flex-wrap: wrap; gap: 14px; }
+        .studio-title { font-size: 26px; font-weight: 900; color: #fff; }
+        
+        .comp-slider-box {
+            position: relative; width: 100%; max-width: 900px; height: 380px; margin: 20px auto;
+            border-radius: 24px; overflow: hidden; border: 1px solid var(--turquoise);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); user-select: none;
+        }
+        @media (max-width: 768px) { .comp-slider-box { height: 260px; } }
+        .comp-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: flex-end; padding: 24px; }
+        .comp-before { background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 50%), url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=1000&q=80') center/cover; width: 100%; color: #fff; font-weight: 800; }
+        .comp-after { background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 50%), url('https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1000&q=80') center/cover; width: 50%; color: var(--turquoise); font-weight: 900; overflow: hidden; border-left: 3px solid var(--turquoise); box-shadow: -5px 0 25px var(--turquoise-glow); }
+        .comp-badge { background: rgba(0,0,0,0.85); padding: 8px 18px; border-radius: 20px; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); }
+        .comp-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; z-index: 20; }
+
+        /* PRODUCTS STORE */
+        .store-section { max-width: 1350px; margin: 0 auto 90px; }
+        .store-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; border-bottom: 1px solid var(--border-metal); padding-bottom: 16px; flex-wrap: wrap; gap: 16px; }
+        .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+        @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .products-grid { grid-template-columns: 1fr; } }
+
+        .product-card {
+            background: var(--workbench); border: 1px solid var(--border-metal); border-radius: 26px;
+            padding: 22px; transition: all 0.3s; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+        }
+        .product-card:hover { border-color: var(--turquoise); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px var(--turquoise-glow); }
+        .prod-img-wrap { width: 100%; height: 220px; border-radius: 18px; overflow: hidden; margin-bottom: 16px; position: relative; background: #05070c; }
+        .prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .product-card:hover .prod-img { transform: scale(1.1); }
+        .prod-tag { position: absolute; top: 10px; right: 10px; background: var(--turquoise); color: #000; font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 14px; }
+        .prod-title { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+        .prod-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+        .prod-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-metal); padding-top: 14px; }
+        .prod-price { font-size: 20px; font-weight: 900; color: #fff; }
+        .prod-price span { font-size: 12px; color: var(--turquoise); }
+        
+        .btn-add {
+            background: rgba(0, 169, 157, 0.15); border: 1px solid var(--turquoise); color: var(--turquoise);
+            font-weight: 800; font-size: 13px; padding: 10px 18px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-add:hover { background: var(--turquoise); color: #000; box-shadow: 0 0 20px var(--turquoise-glow); }
+
+        /* TOAST NOTIFICATION */
+        #toast {
+            position: fixed; bottom: 30px; left: 30px; background: rgba(0, 169, 157, 0.95);
+            color: #000; padding: 16px 26px; border-radius: 20px; font-weight: 900; font-size: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; gap: 10px;
+            border: 1px solid #fff;
+        }
+
+        /* Footer */
+        footer { padding: 60px 40px; background: #05070c; border-top: 1px solid var(--border-metal); text-align: center; color: var(--text-muted); font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- Industrial Garage Sticky Banner -->
+    <div class="garage-header">
+        <div class="banner-left">
+            <span class="banner-pulse"></span>
+            <span>👩‍🔧 گاراژ مجازی و میز کار هوش مصنوعی «یدک‌بانو» | متصل به ۱۲ میلیون موتور فعال در ایران</span>
+        </div>
+        
+        <!-- 3-Tier Pricing Switcher -->
+        <div class="tier-pill-box">
+            <button class="tier-pill active" id="tier-b2c" onclick="switchTier('b2c')">👤 مصرف‌کننده (خرده)</button>
+            <button class="tier-pill" id="tier-b2b" onclick="switchTier('b2b')">🔧 تعمیرگاه‌ها (۱۲٪ تخفیف)</button>
+            <button class="tier-pill" id="tier-whole" onclick="switchTier('wholesale')">🏢 عمده‌فروشی (۲۲٪ تخفیف)</button>
+        </div>
+
+        <button onclick="alert('🛍️ سبد خرید شما خالی است.')" style="background: rgba(0, 169, 157, 0.15); border: 1px solid var(--turquoise); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 12px; cursor: pointer;">
+            🛒 سبد قطعات [۰]
+        </button>
+    </div>
+
+    <!-- WORKBENCH HERO -->
+    <section class="workbench-section">
+        <div class="garage-title-box">
+            <div class="garage-tag">⚡ خلق متفاوت و خلاقانه: میز کار تعاملی هوش مصنوعی</div>
+            <h1>به گاراژ مجازی و مرکز کنترل <br><span>«دکتر بانو»</span> خوش آمدید</h1>
+            <p class="garage-sub">تجربه‌ای کاملاً متفاوت از خرید لوازم یدکی موتور! صدا و عملکرد انجین خود را با دیاگ صوتی تست کنید، موتور خود را به صورت زنده تیونینگ کنید و قدرت قطعات اورجینال را روی نمودار رادار ببینید.</p>
+        </div>
+
+        <!-- 1. LIVE AUDIO ENGINE DIAGNOSTIC DECK -->
+        <div class="diag-deck">
+            <div class="deck-left">
+                <h2>🔊 دستگاه دیاگ صوتی و فرکانسی دکتر بانو</h2>
+                <p>یکی از تست‌های صوتی زیر را اجرا کنید تا هوش مصنوعی دکتر بانو امواج صدای انجین را روی اسیلوسکوپ تحلیل کرده و عیب‌جویی دقیق کند:</p>
+                
+                <div class="sound-btn-grid">
+                    <button class="sound-btn active" onclick="playEngineSound(1, this)">
+                        <span>🔊 ۱. تست صدای انجین سالم فابریک (هوندا ۱۲۵ / کلیک)</span>
+                        <span style="color: #34d399;">● طبیعی</span>
+                    </button>
+                    <button class="sound-btn" onclick="playEngineSound(2, this)">
+                        <span>🔊 ۲. صدای شاتون‌زدن، لقی سوپاپ یا گشاد شدن تسمه (نیازمند تعمیر)</span>
+                        <span style="color: var(--amber);">⚠ هشدار خرابی</span>
+                    </button>
+                    <button class="sound-btn" onclick="playEngineSound(3, this)">
+                        <span>🔊 ۳. صدای اگزوز قهرمانی آکراپوویچ تیونینگ‌شده (بم و مسابقه‌ای)</span>
+                        <span style="color: var(--turquoise);">🔥 تیونینگ حرفه‌ای</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Oscilloscope Monitor -->
+            <div class="monitor-box">
+                <div>
+                    <div class="monitor-header">
+                        <span>🎛️ OSCILLOSCOPE FREQUENCY MONITOR</span>
+                        <span id="osc-status" style="color: #34d399;">● ENGINE HEALTHY (60 Hz)</span>
+                    </div>
+                    <canvas id="osc-canvas"></canvas>
+                </div>
+                
+                <div class="ai-voice-prescription" id="voice-rx">
+                    <strong>👩‍🔧 نسخه تخصصی دکتر بانو (تحلیل موج صدا):</strong>
+                    «صدای انجین کاملاً یکنواخت و نرمه! احتراق سوخت توسط شمع‌های ایریدیم به بهترین شکل انجام میشه و هیچ‌گونه لرزش یا صدای اضافی از قسمت تسمه درایو و سوپاپ‌ها به گوش نمی‌رسه. وضعیت موتور: ۱۰۰٪ عالی.»
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. INTERACTIVE MOTORCYCLE TUNING RIG & RADAR CHART -->
+        <div class="tuning-rig">
+            <div class="rig-left">
+                <h2>🏍️ میز کار تیونینگ ریل‌تایم و نمودار قدرت</h2>
+                <p>قطعات ارتقای زیر را روی موتور مجازی خود نصب کنید و تأثیر آن را به صورت زنده روی نمودار ۵ وجهی قدرت، شتاب و هندلینگ ببینید:</p>
+                
+                <div class="upgrade-list">
+                    <div class="upgrade-item active" onclick="toggleUpgrade('exhaust', 8200000, this)">
+                        <span>⚡ اگزوز کربن Akrapovic (+۳.۵ اسب بخار قدرت و شتاب)</span>
+                        <span class="up-price">۸,۲۰۰,۰۰۰ تومان</span>
+                    </div>
+                    <div class="upgrade-item active" onclick="toggleUpgrade('brake', 1280000, this)">
+                        <span>🛑 لنت سرامیکی Brembo (گیرایی ۱۰۰٪ در سرعت بالا)</span>
+                        <span class="up-price">۱,۲۸۰,۰۰۰ تومان</span>
+                    </div>
+                    <div class="upgrade-item" onclick="toggleUpgrade('clutch', 1890000, this)">
+                        <span>🔩 تسمه درایو Bando ژاپن (حذف کامل لرزش اسکوتر)</span>
+                        <span class="up-price">۱,۸۹۰,۰۰۰ تومان</span>
+                    </div>
+                    <div class="upgrade-item" onclick="toggleUpgrade('light', 950000, this)">
+                        <span>💡 هدلایت LED ۶۰۰۰ لومن (پرتاب نور ۱۵۰ متری در شب)</span>
+                        <span class="up-price">۹۵۰,۰۰۰ تومان</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 16px; border-radius: 16px;">
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted);">مبلغ کل کیت تیونینگ انتخابی:</div>
+                        <div style="font-size: 22px; font-weight: 900; color: var(--amber);" id="tuning-total">۹,۴۸۰,۰۰۰ <span>تومان</span></div>
+                    </div>
+                    <button onclick="alert('🎉 کیت تیونینگ سفارشی شما با موفقیت ثبت شد و با ۱۲٪ تخفیف همکاری ارسال می‌گردد.')" style="background: var(--amber); color: #000; font-weight: 900; padding: 12px 24px; border-radius: 20px; border: none; cursor: pointer;">
+                        🚀 سفارش این کیت تیونینگ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Radar Chart Monitor -->
+            <div class="radar-box">
+                <div style="font-size: 14px; font-weight: 900; color: var(--amber); margin-bottom: 16px; letter-spacing: 1px;">📊 نمودار تحلیل قدرت موتور (Radar Chart)</div>
+                <canvas id="radar-canvas"></canvas>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 14px;">
+                    ● نمودار زرد: قدرت موتور تیونینگ‌شده شما<br>● نمودار تیره: موتور فابریک کارخانه
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. THE 45-SECOND NANO BANANA STUDIO WITH WIPE SLIDER -->
+        <div class="studio-deck">
+            <div class="studio-header">
+                <div>
+                    <div class="studio-title">📸 مقایسه زنده کاتالوگ Nano Banana (قبل و بعد از رندر ۴۵ ثانیه‌ای)</div>
+                    <div style="color: var(--text-muted); font-size: 14px; margin-top: 6px;">خط وسط تصویر را بکشید تا معجزه تبدیل عکس موبایلی کف گاراژ به بنر استودیویی هوش مصنوعی را ببینید:</div>
+                </div>
+                <span style="background: var(--turquoise); color: #000; font-size: 13px; font-weight: 900; padding: 6px 16px; border-radius: 20px;">● هزینه: ۰.۱۶ دلار / محصول</span>
+            </div>
+
+            <div class="comp-slider-box">
+                <div class="comp-layer comp-before">
+                    <span class="comp-badge" style="border-color: #ef4444; color: #ef4444;">❌ عکس موبایلی ساده روی زمین روغنی تعمیرگاه</span>
+                </div>
+                <div class="comp-layer comp-after" id="comp-after-layer">
+                    <span class="comp-badge" style="border-color: var(--turquoise); color: var(--turquoise);">✨ رندر استودیویی Gemini 2.5 Flash / Nano Banana در ۴۵ ثانیه</span>
+                </div>
+                <input type="range" class="comp-input" min="0" max="100" value="50" oninput="document.getElementById('comp-after-layer').style.width = this.value + '%'">
+            </div>
+        </div>
+
+        <!-- 4. DYNAMIC PRODUCTS STORE -->
+        <div class="store-section" id="store">
+            <div class="store-header">
+                <div>
+                    <h2 style="font-size: 32px; font-weight: 900; color: #fff;">فروشگاه آنلاین قطعات تیونینگ (موجود در انبار تهران)</h2>
+                    <p style="color: var(--text-muted); font-size: 15px;">تمامی قطعات با ویدیو تست دکتر بانو و ضمانت ۷ روزه اصالت عرضه می‌شوند</p>
+                </div>
+                <div style="font-size: 14px; font-weight: 800; color: var(--turquoise);">● ارسال رایگان برای سفارش‌های بالای ۲ میلیون تومان</div>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="prod-img-wrap">
+                        <span class="prod-tag">پرفروش تیونرها</span>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Akrapovic_exhaust_on_motorcycle.jpg" alt="اگزوز آکراپوویچ" class="prod-img">
+                    </div>
+                    <h3 class="prod-title">اگزوز کربنی Akrapovic اسلیپ‌آن با سایلنسر</h3>
+                    <p class="prod-desc">افزایش ۳.۵ اسب بخار قدرت انجین، کاهش وزن ۴۰ درصدی نسبت به فابریک با صدای مسابقه‌ای.</p>
+                    <div class="prod-footer">
+                        <div class="prod-price prod-price-text">۸,۲۰۰,۰۰۰ <span>تومان</span></div>
+                        <button class="btn-add" onclick="showToast('✅ اگزوز آکراپوویچ به سبد اضافه شد!')">🛒 افزودن به سبد</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="prod-img-wrap">
+                        <span class="prod-tag" style="background: var(--amber); color: #000;">اورجینال ایتالیا</span>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Brembo_brakes_on_a_motorcycle.jpg" alt="لنت برامبو" class="prod-img">
+                    </div>
+                    <h3 class="prod-title">لنت ترمز سرامیکی Brembo اصلی (جفت)</h3>
+                    <p class="prod-desc">گیرایی فوق‌العاده در سرعت‌های بالا و مسیرهای بارانی بدون تولید صدا و سایش دیسک ترمز.</p>
+                    <div class="prod-footer">
+                        <div class="prod-price prod-price-text">۱,۲۸۰,۰۰۰ <span>تومان</span></div>
+                        <button class="btn-add" onclick="showToast('✅ لنت برامبو به سبد اضافه شد!')">🛒 افزودن به سبد</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="prod-img-wrap">
+                        <span class="prod-tag" style="background: #34d399; color: #000;">اورجینال ژاپن</span>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Scooter_CVT_transmission_belt.jpg" alt="تسمه باندو" class="prod-img">
+                    </div>
+                    <h3 class="prod-title">تسمه درایو (تسمه کلاچ) Bando اصلی هندا کلیک</h3>
+                    <p class="prod-desc">مقاوم در برابر حرارت بالا و کشش شدید، حذف کامل لرزش موتور در شروع حرکت و شتاب بی‌نقص.</p>
+                    <div class="prod-footer">
+                        <div class="prod-price prod-price-text">۱,۸۹۰,۰۰۰ <span>تومان</span></div>
+                        <button class="btn-add" onclick="showToast('✅ تسمه باندو به سبد اضافه شد!')">🛒 افزودن به سبد</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">
+        <span>👩‍🔧</span>
+        <span id="toast-msg">قطعه به سبد خرید اضافه شد!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 22px; color: #fff; font-weight: 900; margin-bottom: 8px;">گاراژ مجازی و میز کار هوش مصنوعی «یدک‌بانو»</p>
+        <p style="margin-bottom: 16px;">اولین اکوسیستم ایجنتیک لوازم یدکی موتورسیکلت در ایران | ۱۲ میلیون موتور فعال، ۱ انبار ابری</p>
+        <p style="color: var(--turquoise); font-weight: 800; margin-bottom: 20px;">«قطعه درست، قیمت درست، بانو پشتته.»</p>
+        <p>© ۱۴۰۵ تمامی حقوق مادی و معنوی متعلق به امپراتوری «یدک‌بانو» می‌باشد.</p>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // 1. 3-Tier Pricing Dynamic Switcher
+        const basePrices = [8200000, 1280000, 1890000];
+        function switchTier(tier) {
+            document.querySelectorAll('.tier-pill').forEach(btn => btn.classList.remove('active'));
+            const priceTexts = document.querySelectorAll('.prod-price-text');
+            let mult = 1.0;
+            if (tier === 'b2c') {
+                document.getElementById('tier-b2c').classList.add('active');
+                showToast("👤 نمایش قیمت‌های خرده‌فروشی (B2C)");
+            } else if (tier === 'b2b') {
+                document.getElementById('tier-b2b').classList.add('active');
+                mult = 0.88; // 12% off
+                showToast("🔧 کلوپ تعمیرکاران دکتر بانو: ۱۲٪ تخفیف + ارسال ۲ ساعته!");
+            } else {
+                document.getElementById('tier-whole').classList.add('active');
+                mult = 0.78; // 22% off
+                showToast("🏢 عمده‌فروشی: ۲۲٪ تخفیف ویژه + تسویه ۳۰ روزه!");
+            }
+            priceTexts.forEach((el, idx) => {
+                const p = Math.round(basePrices[idx] * mult / 1000) * 1000;
+                el.innerHTML = `${p.toLocaleString('fa-IR')} <span>تومان</span>`;
+            });
+        }
+
+        // 2. Oscilloscope Canvas Audio Engine Simulation
+        const oscCanvas = document.getElementById('osc-canvas');
+        const oscCtx = oscCanvas.getContext('2d');
+        let oscMode = 1; // 1: normal, 2: warning, 3: tuning
+        let oscTime = 0;
+
+        function resizeOsc() { oscCanvas.width = oscCanvas.parentElement.clientWidth - 48; oscCanvas.height = 140; }
+        window.addEventListener('resize', resizeOsc);
+        setTimeout(resizeOsc, 100);
+
+        function drawOsc() {
+            oscCtx.clearRect(0, 0, oscCanvas.width, oscCanvas.height);
+            oscCtx.lineWidth = 3;
+            oscCtx.beginPath();
+            
+            const cy = oscCanvas.height / 2;
+            for (let x = 0; x < oscCanvas.width; x++) {
+                let y = cy;
+                if (oscMode === 1) {
+                    oscCtx.strokeStyle = '#34d399';
+                    y += Math.sin((x + oscTime) * 0.05) * 20 + Math.sin((x + oscTime) * 0.1) * 10;
+                } else if (oscMode === 2) {
+                    oscCtx.strokeStyle = '#F59E0B';
+                    y += Math.sin((x + oscTime) * 0.15) * 45 + ((Math.random() - 0.5) * 25);
+                } else {
+                    oscCtx.strokeStyle = '#00f0ff';
+                    y += Math.sin((x + oscTime) * 0.08) * 35 + Math.cos((x + oscTime) * 0.2) * 20;
+                }
+                if (x === 0) oscCtx.moveTo(x, y); else oscCtx.lineTo(x, y);
+            }
+            oscCtx.stroke();
+            oscTime += 3;
+            requestAnimationFrame(drawOsc);
+        }
+        drawOsc();
+
+        function playEngineSound(mode, btn) {
+            document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            oscMode = mode;
+            
+            const status = document.getElementById('osc-status');
+            const rx = document.getElementById('voice-rx');
+            
+            if (mode === 1) {
+                status.innerText = "● ENGINE HEALTHY (60 Hz - NORMAL)";
+                status.style.color = "#34d399";
+                rx.innerHTML = "<strong>👩‍🔧 نسخه تخصصی دکتر بانو (تحلیل موج صدا):</strong>«صدای انجین کاملاً یکنواخت و نرمه! احتراق سوخت توسط شمع‌های ایریدیم به بهترین شکل انجام میشه و هیچ‌گونه لرزش یا صدای اضافی به گوش نمی‌رسه. وضعیت موتور: ۱۰۰٪ عالی.»";
+                showToast("🔊 پخش شبیه‌سازی صدای انجین سالم فابریک");
+            } else if (mode === 2) {
+                status.innerText = "⚠ ENGINE WARNING (140 Hz - VALVE/BELT WEAR)";
+                status.style.color = "#F59E0B";
+                rx.innerHTML = "<strong>👩‍🔧 نسخه تخصصی دکتر بانو (تحلیل موج صدا):</strong>«هشدار! فرکانس صدا نشون می‌ده سوپاپ‌ها فیلر می‌خوان یا تسمه کلاچ (CVT) گشاد شده و داره بکسواد می‌کنه! اگه فوری تسمه رو عوض نکنی کلاچ آسیب می‌بینه. کیت تسمه Bando ژاپن رو پیشنهاد دادم 👇»";
+                showToast("⚠ هشدار: تشخیص صدای لقی سوپاپ و استهلاک تسمه!");
+            } else {
+                status.innerText = "🔥 TUNED RACING EXHAUST (220 Hz - AKRAPOVIC)";
+                status.style.color = "#00f0ff";
+                rx.innerHTML = "<strong>👩‍🔧 نسخه تخصصی دکتر بانو (تحلیل موج صدا):</strong>«اوه چه صدایی! 🚀 این صدای بم و جذاب اگزوز کربنی Akrapovic تیونینگ‌شده است! خروج دود ۱۰۰٪ بهینه شده و شتاب موتور تا ۳.۵ اسب بخار افزایش پیدا کرده. فوق‌العاده است!»";
+                showToast("🔥 پخش صدای اگزوز قهرمانی آکراپوویچ تیونینگ‌شده!");
+            }
+        }
+
+        // 3. Interactive Tuning Rig & Radar Chart
+        let upgrades = { exhaust: true, brake: true, clutch: false, light: false };
+        const upPrices = { exhaust: 8200000, brake: 1280000, clutch: 1890000, light: 950000 };
+        
+        function toggleUpgrade(key, price, btn) {
+            upgrades[key] = !upgrades[key];
+            btn.classList.toggle('active');
+            
+            let total = 0;
+            for (let k in upgrades) if (upgrades[k]) total += upPrices[k];
+            document.getElementById('tuning-total').innerHTML = `${total.toLocaleString('fa-IR')} <span>تومان</span>`;
+            
+            drawRadar();
+            showToast(`⚙️ کیت تیونینگ بروزرسانی شد!`);
+        }
+
+        const radarCanvas = document.getElementById('radar-canvas');
+        const radarCtx = radarCanvas.getContext('2d');
+        radarCanvas.width = 280; radarCanvas.height = 280;
+
+        function drawRadar() {
+            radarCtx.clearRect(0, 0, 280, 280);
+            const cx = 140, cy = 140, r = 100;
+            const labels = ['قدرت و سرعت', 'ترمز و ایمنی', 'شتاب اولیه', 'هندلینگ', 'جذابیت ظاهری'];
+            const n = 5;
+            
+            // Draw background polygons
+            for (let step = 0.2; step <= 1; step += 0.2) {
+                radarCtx.beginPath();
+                for (let i = 0; i < n; i++) {
+                    const ang = (Math.PI * 2 / n) * i - Math.PI / 2;
+                    const x = cx + Math.cos(ang) * (r * step);
+                    const y = cy + Math.sin(ang) * (r * step);
+                    if (i === 0) radarCtx.moveTo(x, y); else radarCtx.lineTo(x, y);
+                }
+                radarCtx.closePath();
+                radarCtx.strokeStyle = 'rgba(255,255,255,0.15)';
+                radarCtx.stroke();
+            }
+
+            // Draw axis lines & labels
+            radarCtx.fillStyle = '#94a3b8'; radarCtx.font = 'bold 11px Vazirmatn';
+            for (let i = 0; i < n; i++) {
+                const ang = (Math.PI * 2 / n) * i - Math.PI / 2;
+                const x = cx + Math.cos(ang) * r;
+                const y = cy + Math.sin(ang) * r;
+                radarCtx.beginPath(); radarCtx.moveTo(cx, cy); radarCtx.lineTo(x, y);
+                radarCtx.strokeStyle = 'rgba(255,255,255,0.2)'; radarCtx.stroke();
+                
+                const lx = cx + Math.cos(ang) * (r + 22);
+                const ly = cy + Math.sin(ang) * (r + 15);
+                radarCtx.textAlign = 'center';
+                radarCtx.fillText(labels[i], lx, ly);
+            }
+
+            // Base Factory Stats (Dark polygon)
+            const baseStats = [0.5, 0.5, 0.5, 0.5, 0.4];
+            radarCtx.beginPath();
+            for (let i = 0; i < n; i++) {
+                const ang = (Math.PI * 2 / n) * i - Math.PI / 2;
+                const x = cx + Math.cos(ang) * (r * baseStats[i]);
+                const y = cy + Math.sin(ang) * (r * baseStats[i]);
+                if (i === 0) radarCtx.moveTo(x, y); else radarCtx.lineTo(x, y);
+            }
+            radarCtx.closePath();
+            radarCtx.fillStyle = 'rgba(255,255,255,0.1)'; radarCtx.fill();
+            radarCtx.strokeStyle = 'rgba(255,255,255,0.4)'; radarCtx.stroke();
+
+            // Tuned Stats (Amber polygon)
+            let tunedStats = [0.5, 0.5, 0.5, 0.5, 0.4];
+            if (upgrades.exhaust) { tunedStats[0] += 0.45; tunedStats[4] += 0.35; }
+            if (upgrades.brake)   { tunedStats[1] += 0.45; tunedStats[3] += 0.2; }
+            if (upgrades.clutch)  { tunedStats[2] += 0.45; tunedStats[3] += 0.25; }
+            if (upgrades.light)   { tunedStats[4] += 0.25; tunedStats[1] += 0.15; }
+            for(let i=0; i<n; i++) tunedStats[i] = Math.min(1, tunedStats[i]);
+
+            radarCtx.beginPath();
+            for (let i = 0; i < n; i++) {
+                const ang = (Math.PI * 2 / n) * i - Math.PI / 2;
+                const x = cx + Math.cos(ang) * (r * tunedStats[i]);
+                const y = cy + Math.sin(ang) * (r * tunedStats[i]);
+                if (i === 0) radarCtx.moveTo(x, y); else radarCtx.lineTo(x, y);
+            }
+            radarCtx.closePath();
+            radarCtx.fillStyle = 'rgba(245, 158, 11, 0.35)'; radarCtx.fill();
+            radarCtx.lineWidth = 2; radarCtx.strokeStyle = '#F59E0B'; radarCtx.stroke();
+        }
+        drawRadar();
+
+        // 4. Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+    </script>
+</body>
+</html>
