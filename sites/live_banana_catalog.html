@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>یدک‌بانو AI | کاتالوگ زنده استودیویی (Nano Banana Studio)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;900&display=swap');
+        * { box-sizing: border-box; font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body { margin: 0; padding: 0; background-color: #f8fafc; color: #0f172a; }
+        .header { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 24px 40px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .logo-area h1 { margin: 0; font-size: 24px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 10px; }
+        .logo-area p { margin: 4px 0 0 0; font-size: 13px; color: #64748b; }
+        .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 40px 0 40px; }
+        .filter-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s; }
+        .filter-btn.active, .filter-btn:hover { background: #0f172a; color: #ffffff; border-color: #0f172a; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; padding: 24px 40px 60px 40px; max-width: 1600px; margin: 0 auto; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.1) !important; }
+        .banner-ai { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #fff; margin: 24px 40px 0 40px; padding: 24px 32px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .modal-content { background: #fff; padding: 32px; border-radius: 24px; max-width: 480px; width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-area">
+            <h1>👩‍🔧 یدک‌بانو <span style="background:#2563eb; color:#fff; font-size:12px; padding:4px 8px; border-radius:6px;">AI 2026</span> <span style="font-size:14px; color:#16a34a; font-weight:600;">| دکتر بانو (سارا)</span></h1>
+            <p>اولین فروشگاه ایجنتیک لوازم یدکی موتورسیکلت در ایران • کاتالوگ استودیویی Gemini Nano Banana</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div style="text-align:left; font-size:12px; color:#64748b;">
+                <div>وضعیت استقرار: <strong style="color:#16a34a;">لبه ابری گیت‌هاب (GitHub Edge)</strong></div>
+                <div>تعداد قطعات پردازش شده: <strong>۱۰ قلم (10 SKUs)</strong></div>
+            </div>
+            <a href="https://t.me/YadakBanooBot" target="_blank" style="background:#0f172a; color:#fff; text-decoration:none; padding:10px 18px; border-radius:10px; font-weight:bold; font-size:13px;">چت با دکتر بانو در تلگرام 💬</a>
+        </div>
+    </header>
+
+    <div class="banner-ai">
+        <div>
+            <h2 style="margin:0 0 8px 0; font-size:20px; color:#38bdf8;">⚡ استودیوی خودکار عکاسی و قیمت‌گذاری (Nano Banana Studio)</h2>
+            <p style="margin:0; font-size:14px; color:#cbd5e1; max-width:700px; line-height:1.6;">
+                در این کاتالوگ، عکس‌های موبایلی قطعات به طور خودکار توسط ایجنت هوش مصنوعی بک‌گراند استودیویی گرفته و با فرمول داینامیک (خرید × ۱.۳۸) قیمت‌گذاری شده‌اند. تشخیص عیب و سازگاری شاسی توسط «دکتر بانو» انجام شده است.
+            </p>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:14px 20px; border-radius:14px; text-align:center;">
+            <div style="font-size:12px; color:#94a3b8;">ضریب حاشیه سود خودکار</div>
+            <div style="font-size:24px; font-weight:900; color:#38bdf8;">۳۸٪ خالص</div>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterCategory('all', this)">مشاهده همه (۱۰ قطعه)</button>
+        <button class="filter-btn" onclick="filterCategory('لنت و ترمز', this)">لنت و ترمز</button>
+        <button class="filter-btn" onclick="filterCategory('سیستم برقی و جرقه', this)">سیستم برقی و جرقه</button>
+        <button class="filter-btn" onclick="filterCategory('سیستم انتقال قدرت (CVT)', this)">انتقال قدرت (CVT)</button>
+        <button class="filter-btn" onclick="filterCategory('کلاچ و گیربکس', this)">کلاچ و گیربکس</button>
+        <button class="filter-btn" onclick="filterCategory('تعلیق و جلوبندی', this)">تعلیق و جلوبندی</button>
+        <button class="filter-btn" onclick="filterCategory('اگزوز و موتور', this)">اگزوز و موتور</button>
+    </div>
+
+    <div class="grid-container" id="product-grid">
+        
+            <div class="product-card" data-category="لنت و ترمز" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">لنت و ترمز</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-001</span>
+                    <img src="images/honda_brake.jpg" alt="لنت ترمز جلو هوندا ۱۲۵ برمبو اصل" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">لنت ترمز جلو هوندا ۱۲۵ برمبو اصل</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda CG 125</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda CDI 125</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">کویر ۱۲۵</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">رهرو ۱۲۵</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>⚠️ دکتر بانو: در صورت شنیدن صدای سوت هنگام ترمزگیری یا کاهش قدرت ترمز، فوراً لنت‌ها را تعویض کنید. این لنت برمبو بدون آزبست بوده و دیسک را تراش نمی‌دهد.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">590,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">440,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-001', 'لنت ترمز جلو هوندا ۱۲۵ برمبو اصل', 440000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="سیستم برقی و جرقه" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">سیستم برقی و جرقه</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-002</span>
+                    <img src="images/sparkplug.jpg" alt="شمع موتور ریسینگ NGK ایریدیم پایه کوتاه" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">شمع موتور ریسینگ NGK ایریدیم پایه کوتاه</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda 125</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Boxer 150</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Benelli 300</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Yamaha NMAX</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>⚡ دکتر بانو: شمع ایریدیم NGK باعث کاهش مصرف سوخت تا ۱۵٪ و استارت فوری در هوای سرد زمستان می‌شود. فاصله دهانه شمع (گپ) روی ۰.۸ میلی‌متر تنظیم شده است.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">770,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">620,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-002', 'شمع موتور ریسینگ NGK ایریدیم پایه کوتاه', 620000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="سیستم انتقال قدرت (CVT)" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">سیستم انتقال قدرت (CVT)</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-003</span>
+                    <img src="images/belt.jpg" alt="تسمه گیربکس اتوماتیک باندو مدل کلیک ۱۵۰" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">تسمه گیربکس اتوماتیک باندو مدل کلیک ۱۵۰</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda Click 150i</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda Click 125i</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">موتورهای اسکوتر طرح کلیک</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>⚙️ دکتر بانو: تسمه اورجینال باندو ژاپن تا ۲۰ هزار کیلومتر بدون کشسانی و بریدگی کار می‌کند. در صورت لرزش اسکوتر هنگام شروع حرکت، کلاچ عقب و تسمه بررسی شود.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">1,320,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">1,170,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-003', 'تسمه گیربکس اتوماتیک باندو مدل کلیک ۱۵۰', 1170000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="کلاچ و گیربکس" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">کلاچ و گیربکس</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-004</span>
+                    <img src="images/clutch.jpg" alt="صفحه کلاچ ۵ تیرک اورجینال باجاج باکسر ۱۵۰" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">صفحه کلاچ ۵ تیرک اورجینال باجاج باکسر ۱۵۰</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Bajaj Boxer 150</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Bajaj Pulsar 150</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">بوکسر ۱۵۰ ۵ دنده</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>🔧 دکتر بانو: تعویض به‌موقع صفحه کلاچ باکسر باعث شتاب‌گیری فوق‌العاده و جلوگیری از داغ شدن موتور در ترافیک‌های سنگین شهری می‌شود.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">1,010,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">860,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-004', 'صفحه کلاچ ۵ تیرک اورجینال باجاج باکسر ۱۵۰', 860000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="تعلیق و جلوبندی" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">تعلیق و جلوبندی</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-005</span>
+                    <img src="images/ohlins.jpg" alt="کمک فنر عقب گازی اولینز طلایی مدل بنلی ۳۰۰" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">کمک فنر عقب گازی اولینز طلایی مدل بنلی ۳۰۰</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Benelli TNT 300</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Benelli 249S</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Yamaha R25</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Kawasaki Ninja 250</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>🏍️ دکتر بانو: کمک‌فنر گازی اولینز فشار ضربات دست‌انداز را تا ۸۰٪ جذب کرده و تعادل موتورسیکلت در پیچ‌های تند را تضمین می‌کند.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">5,950,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">5,800,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-005', 'کمک فنر عقب گازی اولینز طلایی مدل بنلی ۳۰۰', 5800000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="لنت و ترمز" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">لنت و ترمز</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-006</span>
+                    <img src="images/brembo.jpg" alt="دیسک ترمز اسپرت خنک‌شونده برمبو یاماها NMAX" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">دیسک ترمز اسپرت خنک‌شونده برمبو یاماها NMAX</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Yamaha NMAX 155</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Yamaha Aerox 155</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">هوندا ADV 150</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>⚠️ دکتر بانو: در صورت شنیدن صدای سوت هنگام ترمزگیری یا کاهش قدرت ترمز، فوراً لنت‌ها را تعویض کنید. این لنت برمبو بدون آزبست بوده و دیسک را تراش نمی‌دهد.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">2,700,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">2,550,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-006', 'دیسک ترمز اسپرت خنک‌شونده برمبو یاماها NMAX', 2550000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="اگزوز و موتور" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">اگزوز و موتور</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-007</span>
+                    <img src="images/akrapovic.jpg" alt="اگزوز قهرمانی آكراپوویچ تیتانیوم مدل پالس NS200" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">اگزوز قهرمانی آكراپوویچ تیتانیوم مدل پالس NS200</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Bajaj Pulsar NS200</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Pulsar RS200</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">KTM Duke 200</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Benelli 180S</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>🔥 دکتر بانو: اگزوز تیتانیوم آکراپوویچ علاوه بر صدای بیس‌دار و جذاب، وزن موتور را ۳ کیلوگرم کاهش داده و ۳ اسب بخار به توان خروجی اضافه می‌کند.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">7,740,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">7,590,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-007', 'اگزوز قهرمانی آكراپوویچ تیتانیوم مدل پالس NS200', 7590000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="روشنایی و بدنه" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">روشنایی و بدنه</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-008</span>
+                    <img src="images/headlight.jpg" alt="چراغ جلو ال‌ای‌دی دی‌لایت اسپرت مدل کلیک" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">چراغ جلو ال‌ای‌دی دی‌لایت اسپرت مدل کلیک</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda Click 150i</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda Click 125i</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">اسکوترهای همتاز و گلکسی</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>💡 دکتر بانو: طلق پلی‌کربنات ضدخش این چراغ در برابر نور آفتاب زرد نمی‌شود و پرتاب نور ال‌ای‌دی آن در شب تا ۱۵۰ متر جاده را روشن می‌کند.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">3,050,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">2,900,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-008', 'چراغ جلو ال‌ای‌دی دی‌لایت اسپرت مدل کلیک', 2900000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="سوخت‌رسانی و موتور" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">سوخت‌رسانی و موتور</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-009</span>
+                    <img src="images/sparkplug.jpg" alt="کاربراتور اصل ژاپن کیهین (Keihin) مدل هوندا CG125" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">کاربراتور اصل ژاپن کیهین (Keihin) مدل هوندا CG125</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Honda CG 125</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">کلیه موتورهای ۱۲۵ سی‌سی کاربراتوری</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>⛽ دکتر بانو: کاربراتور کیهین ژاپن با ژیگلورهای دقیق، ریپ زدن موتور را کاملاً رفع کرده و تنظیم موتور را برای سال‌ها ثابت نگه می‌دارد.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">1,460,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">1,310,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-009', 'کاربراتور اصل ژاپن کیهین (Keihin) مدل هوندا CG125', 1310000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="سیستم انتقال قدرت" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;">
+                <div style="position:relative; background:#f8fafc; padding:20px; text-align:center; border-bottom:1px solid #f1f5f9;">
+                    <span style="position:absolute; top:12px; right:12px; background:#0f172a; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:8px;">سیستم انتقال قدرت</span>
+                    <span style="position:absolute; top:12px; left:12px; background:#f1f5f9; color:#475569; font-size:11px; font-family:monospace; padding:4px 8px; border-radius:6px;">YB-MOTO-010</span>
+                    <img src="images/honda_brake.jpg" alt="ست زنجیر و خورشیدی طلایی DID اورینگ‌دار مدل پالس" style="max-height:180px; width:auto; margin:0 auto; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div style="margin-top:10px; font-size:11px; color:#16a34a; font-weight:bold;">✨ پس‌زمینه استودیویی (Gemini Nano Banana AI)</div>
+                </div>
+                
+                <div style="padding:20px; display:flex; flex-direction:column; flex-grow:1;">
+                    <h3 style="margin:0 0 12px 0; font-size:18px; color:#0f172a; line-height:1.4;">ست زنجیر و خورشیدی طلایی DID اورینگ‌دار مدل پالس</h3>
+                    
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:12px; color:#64748b; margin-bottom:6px;">🏍️ سازگاری شاسی و مدل‌ها:</div>
+                        <div><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Bajaj Pulsar NS200</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Pulsar 220</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Benelli 249</span><span style="display:inline-block; background:#e2e8f0; color:#334155; font-size:11px; padding:2px 8px; border-radius:12px; margin:2px;">Apache RTR 200</span></div>
+                    </div>
+                    
+                    <div style="background:#fef3c7; border-right:4px solid #f59e0b; padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#78350f; line-height:1.6;">
+                        <strong>👩‍🔧 تشخیص دکتر بانو:</strong><br>🔗 دکتر بانو: زنجیر اورینگ‌دار DID به دلیل وجود واشرهای پلاستیکی محافظ گریس، ۴ برابر دیرتر از زنجیرهای معمولی کش آمده و صدا نمی‌دهد.
+                    </div>
+                    
+                    <div style="margin-top:auto; padding-top:16px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; color:#94a3b8; text-decoration:line-through;">2,150,000 تومان</div>
+                            <div style="font-size:20px; font-weight:900; color:#0f172a;">2,000,000 <span style="font-size:13px; font-weight:normal; color:#64748b;">تومان</span></div>
+                        </div>
+                        <button onclick="orderItem('YB-MOTO-010', 'ست زنجیر و خورشیدی طلایی DID اورینگ‌دار مدل پالس', 2000000)" style="background:#2563eb; color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:bold; cursor:pointer; transition:background 0.2s;">
+                            🛒 سفارش به دکتر بانو
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+    </div>
+
+    <!-- Order Modal -->
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <div style="font-size:40px; margin-bottom:12px;">👩‍🔧</div>
+            <h3 style="margin:0 0 8px 0; font-size:20px; color:#0f172a;">ثبت سفارش و مشاوره‌ی دکتر بانو</h3>
+            <p id="modal-desc" style="color:#64748b; font-size:14px; line-height:1.6; margin-bottom:20px;"></p>
+            <div style="background:#f8fafc; padding:14px; border-radius:12px; margin-bottom:20px; border:1px solid #e2e8f0; text-align:right;">
+                <div style="font-size:12px; color:#64748b;">مبلغ نهایی با ارسال اکسپرس و بیمه:</div>
+                <div id="modal-price" style="font-size:22px; font-weight:bold; color:#16a34a; margin-top:4px;"></div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button onclick="confirmOrder()" style="flex:1; background:#16a34a; color:#fff; border:none; padding:14px; border-radius:12px; font-weight:bold; cursor:pointer; font-size:14px;">✅ تایید و پرداخت آنلاین / کریپتو</button>
+                <button onclick="closeModal()" style="background:#f1f5f9; color:#475569; border:none; padding:14px 20px; border-radius:12px; font-weight:bold; cursor:pointer;">انصراف</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.product-card').forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        let activeSku = '';
+        let activeTitle = '';
+        let activePrice = 0;
+
+        function orderItem(sku, title, price) {
+            activeSku = sku;
+            activeTitle = title;
+            activePrice = price;
+            
+            document.getElementById('modal-desc').innerHTML = `شما در حال ثبت سفارش برای <strong>«${title}»</strong> با کد شناسه <code>${sku}</code> هستید. دکتر بانو قبل از ارسال، سازگاری دقیق شاسی موتور شما را بررسی خواهد کرد.`;
+            document.getElementById('modal-price').innerText = `${price.toLocaleString()} تومان`;
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('order-modal').style.display = 'none';
+        }
+
+        function confirmOrder() {
+            alert(`🎉 سفارش شما با کد شناسه ${activeSku} با موفقیت در سیستم ایجنتیک یدک‌بانو ثبت شد!
+پیامک رهگیری و لینک پرداخت امن تا لحظاتی دیگر ارسال می‌شود.`);
+            closeModal();
+        }
+    </script>
+</body>
+</html>

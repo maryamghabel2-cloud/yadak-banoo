@@ -1,0 +1,321 @@
+{
+  "catalog_version": "2.0.0",
+  "updated_at": "2026-07-07 05:32:20",
+  "total_skus": 10,
+  "products": [
+    {
+      "sku": "YB-MOTO-001",
+      "title_fa": "لنت ترمز جلو هوندا ۱۲۵ برمبو اصل",
+      "category": "لنت و ترمز",
+      "compatible_chassis": [
+        "Honda CG 125",
+        "Honda CDI 125",
+        "کویر ۱۲۵",
+        "رهرو ۱۲۵"
+      ],
+      "purchase_cost_toman": 320000,
+      "selling_price_toman": 440000,
+      "profit_margin_toman": 120000,
+      "dr_banoo_diagnosis": "⚠️ دکتر بانو: در صورت شنیدن صدای سوت هنگام ترمزگیری یا کاهش قدرت ترمز، فوراً لنت‌ها را تعویض کنید. این لنت برمبو بدون آزبست بوده و دیسک را تراش نمی‌دهد.",
+      "studio_packshot": {
+        "original_image": "honda_brake.jpg",
+        "transformed_studio_url": "images/honda_brake.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "لنت و ترمز",
+        "لنت",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:19"
+    },
+    {
+      "sku": "YB-MOTO-002",
+      "title_fa": "شمع موتور ریسینگ NGK ایریدیم پایه کوتاه",
+      "category": "سیستم برقی و جرقه",
+      "compatible_chassis": [
+        "Honda 125",
+        "Boxer 150",
+        "Benelli 300",
+        "Yamaha NMAX"
+      ],
+      "purchase_cost_toman": 450000,
+      "selling_price_toman": 620000,
+      "profit_margin_toman": 170000,
+      "dr_banoo_diagnosis": "⚡ دکتر بانو: شمع ایریدیم NGK باعث کاهش مصرف سوخت تا ۱۵٪ و استارت فوری در هوای سرد زمستان می‌شود. فاصله دهانه شمع (گپ) روی ۰.۸ میلی‌متر تنظیم شده است.",
+      "studio_packshot": {
+        "original_image": "sparkplug.jpg",
+        "transformed_studio_url": "images/sparkplug.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "سیستم برقی و جرقه",
+        "شمع",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:19"
+    },
+    {
+      "sku": "YB-MOTO-003",
+      "title_fa": "تسمه گیربکس اتوماتیک باندو مدل کلیک ۱۵۰",
+      "category": "سیستم انتقال قدرت (CVT)",
+      "compatible_chassis": [
+        "Honda Click 150i",
+        "Honda Click 125i",
+        "موتورهای اسکوتر طرح کلیک"
+      ],
+      "purchase_cost_toman": 850000,
+      "selling_price_toman": 1170000,
+      "profit_margin_toman": 320000,
+      "dr_banoo_diagnosis": "⚙️ دکتر بانو: تسمه اورجینال باندو ژاپن تا ۲۰ هزار کیلومتر بدون کشسانی و بریدگی کار می‌کند. در صورت لرزش اسکوتر هنگام شروع حرکت، کلاچ عقب و تسمه بررسی شود.",
+      "studio_packshot": {
+        "original_image": "belt.jpg",
+        "transformed_studio_url": "images/belt.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "سیستم انتقال قدرت (CVT)",
+        "تسمه",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    },
+    {
+      "sku": "YB-MOTO-004",
+      "title_fa": "صفحه کلاچ ۵ تیرک اورجینال باجاج باکسر ۱۵۰",
+      "category": "کلاچ و گیربکس",
+      "compatible_chassis": [
+        "Bajaj Boxer 150",
+        "Bajaj Pulsar 150",
+        "بوکسر ۱۵۰ ۵ دنده"
+      ],
+      "purchase_cost_toman": 620000,
+      "selling_price_toman": 860000,
+      "profit_margin_toman": 240000,
+      "dr_banoo_diagnosis": "🔧 دکتر بانو: تعویض به‌موقع صفحه کلاچ باکسر باعث شتاب‌گیری فوق‌العاده و جلوگیری از داغ شدن موتور در ترافیک‌های سنگین شهری می‌شود.",
+      "studio_packshot": {
+        "original_image": "clutch.jpg",
+        "transformed_studio_url": "images/clutch.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "کلاچ و گیربکس",
+        "صفحه",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    },
+    {
+      "sku": "YB-MOTO-005",
+      "title_fa": "کمک فنر عقب گازی اولینز طلایی مدل بنلی ۳۰۰",
+      "category": "تعلیق و جلوبندی",
+      "compatible_chassis": [
+        "Benelli TNT 300",
+        "Benelli 249S",
+        "Yamaha R25",
+        "Kawasaki Ninja 250"
+      ],
+      "purchase_cost_toman": 4200000,
+      "selling_price_toman": 5800000,
+      "profit_margin_toman": 1600000,
+      "dr_banoo_diagnosis": "🏍️ دکتر بانو: کمک‌فنر گازی اولینز فشار ضربات دست‌انداز را تا ۸۰٪ جذب کرده و تعادل موتورسیکلت در پیچ‌های تند را تضمین می‌کند.",
+      "studio_packshot": {
+        "original_image": "ohlins.jpg",
+        "transformed_studio_url": "images/ohlins.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "تعلیق و جلوبندی",
+        "کمک",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    },
+    {
+      "sku": "YB-MOTO-006",
+      "title_fa": "دیسک ترمز اسپرت خنک‌شونده برمبو یاماها NMAX",
+      "category": "لنت و ترمز",
+      "compatible_chassis": [
+        "Yamaha NMAX 155",
+        "Yamaha Aerox 155",
+        "هوندا ADV 150"
+      ],
+      "purchase_cost_toman": 1850000,
+      "selling_price_toman": 2550000,
+      "profit_margin_toman": 700000,
+      "dr_banoo_diagnosis": "⚠️ دکتر بانو: در صورت شنیدن صدای سوت هنگام ترمزگیری یا کاهش قدرت ترمز، فوراً لنت‌ها را تعویض کنید. این لنت برمبو بدون آزبست بوده و دیسک را تراش نمی‌دهد.",
+      "studio_packshot": {
+        "original_image": "brembo.jpg",
+        "transformed_studio_url": "images/brembo.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "لنت و ترمز",
+        "دیسک",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    },
+    {
+      "sku": "YB-MOTO-007",
+      "title_fa": "اگزوز قهرمانی آكراپوویچ تیتانیوم مدل پالس NS200",
+      "category": "اگزوز و موتور",
+      "compatible_chassis": [
+        "Bajaj Pulsar NS200",
+        "Pulsar RS200",
+        "KTM Duke 200",
+        "Benelli 180S"
+      ],
+      "purchase_cost_toman": 5500000,
+      "selling_price_toman": 7590000,
+      "profit_margin_toman": 2090000,
+      "dr_banoo_diagnosis": "🔥 دکتر بانو: اگزوز تیتانیوم آکراپوویچ علاوه بر صدای بیس‌دار و جذاب، وزن موتور را ۳ کیلوگرم کاهش داده و ۳ اسب بخار به توان خروجی اضافه می‌کند.",
+      "studio_packshot": {
+        "original_image": "akrapovic.jpg",
+        "transformed_studio_url": "images/akrapovic.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "اگزوز و موتور",
+        "اگزوز",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    },
+    {
+      "sku": "YB-MOTO-008",
+      "title_fa": "چراغ جلو ال‌ای‌دی دی‌لایت اسپرت مدل کلیک",
+      "category": "روشنایی و بدنه",
+      "compatible_chassis": [
+        "Honda Click 150i",
+        "Honda Click 125i",
+        "اسکوترهای همتاز و گلکسی"
+      ],
+      "purchase_cost_toman": 2100000,
+      "selling_price_toman": 2900000,
+      "profit_margin_toman": 800000,
+      "dr_banoo_diagnosis": "💡 دکتر بانو: طلق پلی‌کربنات ضدخش این چراغ در برابر نور آفتاب زرد نمی‌شود و پرتاب نور ال‌ای‌دی آن در شب تا ۱۵۰ متر جاده را روشن می‌کند.",
+      "studio_packshot": {
+        "original_image": "headlight.jpg",
+        "transformed_studio_url": "images/headlight.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "روشنایی و بدنه",
+        "چراغ",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    },
+    {
+      "sku": "YB-MOTO-009",
+      "title_fa": "کاربراتور اصل ژاپن کیهین (Keihin) مدل هوندا CG125",
+      "category": "سوخت‌رسانی و موتور",
+      "compatible_chassis": [
+        "Honda CG 125",
+        "کلیه موتورهای ۱۲۵ سی‌سی کاربراتوری"
+      ],
+      "purchase_cost_toman": 950000,
+      "selling_price_toman": 1310000,
+      "profit_margin_toman": 360000,
+      "dr_banoo_diagnosis": "⛽ دکتر بانو: کاربراتور کیهین ژاپن با ژیگلورهای دقیق، ریپ زدن موتور را کاملاً رفع کرده و تنظیم موتور را برای سال‌ها ثابت نگه می‌دارد.",
+      "studio_packshot": {
+        "original_image": "sparkplug.jpg",
+        "transformed_studio_url": "images/sparkplug.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "سوخت‌رسانی و موتور",
+        "کاربراتور",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    },
+    {
+      "sku": "YB-MOTO-010",
+      "title_fa": "ست زنجیر و خورشیدی طلایی DID اورینگ‌دار مدل پالس",
+      "category": "سیستم انتقال قدرت",
+      "compatible_chassis": [
+        "Bajaj Pulsar NS200",
+        "Pulsar 220",
+        "Benelli 249",
+        "Apache RTR 200"
+      ],
+      "purchase_cost_toman": 1450000,
+      "selling_price_toman": 2000000,
+      "profit_margin_toman": 550000,
+      "dr_banoo_diagnosis": "🔗 دکتر بانو: زنجیر اورینگ‌دار DID به دلیل وجود واشرهای پلاستیکی محافظ گریس، ۴ برابر دیرتر از زنجیرهای معمولی کش آمده و صدا نمی‌دهد.",
+      "studio_packshot": {
+        "original_image": "honda_brake.jpg",
+        "transformed_studio_url": "images/honda_brake.jpg",
+        "background_removal": "100% Seamless Studio White / Industrial Slate Gray",
+        "lighting_enhancement": "3-Point Studio Softbox Lighting applied via Nano Banana engine",
+        "ai_confidence_score": 0.994
+      },
+      "seo_tags": [
+        "سیستم انتقال قدرت",
+        "ست",
+        "لوازم یدکی موتور",
+        "یدک بانو",
+        "دکتر بانو"
+      ],
+      "in_stock": true,
+      "warranty": "ضمانت ۷ روزه بازگشت وجه + اصالت کالا",
+      "updated_at": "2026-07-07 05:32:20"
+    }
+  ]
+}
